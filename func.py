@@ -1,7 +1,4 @@
-from objects import TMatrix
-from math import atan, cos
-
-
+from objects import Atom
 def sorted_merge(sp1, sp2):
     events = []
     i = 0

@@ -1,11 +1,9 @@
 import pygame
-from objects import Atom, Box, Vector2d
+from objects import Atom
 from app import App
 
 
-circle = pygame.image.load('Circle.bmp')
-circle.set_colorkey((255, 255, 255))
-circle_rect = circle.get_rect()
+
 # Загрузка изображения
 
 
@@ -13,7 +11,8 @@ class Sprite(pygame.sprite.Sprite):
     def __init__(self, a: Atom):
         pygame.sprite.Sprite.__init__(self)
         self.a = a
-        self.image = circle
+        self.image = pygame.Surface((10, 10))
+        self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.rect.center = (a.position.x, a.position.y)
 
@@ -21,11 +20,10 @@ class Sprite(pygame.sprite.Sprite):
         self.rect.center = (self.a.position.x, self.a.position.y)
 
 
-d = 10
+Atom.r = 10
 app = App()
-box = Box(Vector2d(900, 600))
-WIDTH = box.size.x + d / 2
-HEIGHT = box.size.y + d / 2
+WIDTH = app.box.size.x + Atom.r
+HEIGHT = app.box.size.y + Atom.r
 pygame.init()
 clock = pygame.time.Clock()
 pygame.display.set_caption("Perfect Gas")
@@ -35,9 +33,11 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
 # Параметры PyGame
-
 all_sprites = pygame.sprite.Group()
+
 a0 = Sprite(app.atoms[0])
 a1 = Sprite(app.atoms[1])
+
 all_sprites.add(a0, a1)
 all_sprites.update()
+# Создание спрайтов
