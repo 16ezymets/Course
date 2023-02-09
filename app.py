@@ -7,39 +7,47 @@ class App:
     def __init__(self):
         self.events: list[Event] = []
         self.atoms = [
-            Atom(Vector2d(105, 24), Vector2d(20, 30)),
-            Atom(Vector2d(40, 404), Vector2d(10, 55)),
+            #Atom(Vector2d(105, 24), Vector2d(5, 4)),
+            #Atom(Vector2d(40, 404), Vector2d(10, 55)),
+            Atom(Vector2d(45, 24), Vector2d(20, 30)),
+            Atom(Vector2d(40, 404), Vector2d(20, 55)),
         ]
+        print(f"v1:{self.atoms[0].velocity}  v2:{self.atoms[1].velocity} ")
         self.box = Box(Vector2d(900, 600))
         self.cur_time = 0
         self.events = self.calc_all_collisions()
             # Создание всех объектов
+        #self.count = 0
 
-    def run(self):
+    def run(self, timestep):
+        assert(len(self.events) > 0)
         e: Event = self.events[0]
-        if e.time - self.cur_time > 0.1:
-            for a in self.atoms:
-                a.move(0.1)
-            self.events = self.cleanup(e.obj1)
-            self.events = self.cleanup(e.obj2)
-            self.cur_time = e.time
-            events1 = self.calc_collisions(e.obj1)
-            events2 = self.calc_collisions(e.obj2)
-            add = sorted_merge(events1, events2)
-            self.events = sorted_merge(self.events, add)
-        else:
-            for a in self.atoms:
-                a.move(e.time - self.cur_time)
-            e.obj1.velocity = e.newv1
-            e.obj2.velocity = e.newv2
-            self.events = self.cleanup(e.obj1)
-            self.events = self.cleanup(e.obj2)
-            self.cur_time = e.time
-            events1 = self.calc_collisions(e.obj1)
-            events2 = self.calc_collisions(e.obj2)
-            add = sorted_merge(events1, events2)
-            self.events = sorted_merge(self.events, add)
-                # Рабочий процесс
+        endruntime = self.cur_time + timestep
+        while endruntime > self.cur_time:
+            if e.time > self.cur_time + timestep:
+                print('.', end='')
+                #self.count += 1
+                for a in self.atoms:
+                    a.move(timestep)
+                self.cur_time += timestep
+                break
+            else:
+                print('#')
+                for a in self.atoms:
+                    a.move(e.time - self.cur_time)
+                e.obj1.velocity = e.newv1
+                e.obj2.velocity = e.newv2
+                print(f"x: v1:{self.atoms[0].velocity}  v2:{self.atoms[1].velocity} ")
+                self.cleanup(e.obj1)
+                self.cleanup(e.obj2)
+                self.cur_time = e.time
+                events1 = self.calc_collisions(e.obj1)
+                events2 = self.calc_collisions(e.obj2)
+                add = sorted_merge(events1, events2)
+                self.events = sorted_merge(self.events, add)
+                assert (len(self.events) > 0)
+                e = self.events[0]
+                    # Рабочий процесс
 
     def calc_all_collisions(self):
         events: list[Event] = []
@@ -66,8 +74,9 @@ class App:
         return events
                 # Подсчет столновений атома с другими атомами и сортировка по времени
 
-    def cleanup(self, obj):
-        return [e for e in self.events if e.obj1 != obj and e.obj2 != obj]
+    def cleanup(self, obj) -> None:
+        if isinstance(obj, Atom):
+            self.events = [e for e in self.events if e.obj1 != obj and e.obj2 != obj]
             # Очистка всех событий, связанных с определенным атомом
 
 #Основное приложение

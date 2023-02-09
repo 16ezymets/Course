@@ -5,22 +5,24 @@ from app import App
 
 
 # Загрузка изображения
-
+Atom.r = 30
+WHITE = (255, 255, 255)
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, a: Atom):
         pygame.sprite.Sprite.__init__(self)
         self.a = a
-        self.image = pygame.Surface((10, 10))
+        self.image = pygame.Surface((1, 1))
         self.image.fill(RED)
-        self.rect = self.image.get_rect()
-        self.rect.center = (a.position.x, a.position.y)
+        self.rect = pygame.Rect(a.position.x - a.r, a.position.y - a.r, 2*a.r, 2*a.r)
+        self.rect.center = (self.a.position.x, self.a.position.y)
+        #self.rect.size = (Atom.r, Atom.r)
 
     def update(self):
         self.rect.center = (self.a.position.x, self.a.position.y)
+        pygame.draw.circle(screen, WHITE, self.rect.center, self.a.r)
 
 
-Atom.r = 10
 app = App()
 WIDTH = app.box.size.x + Atom.r
 HEIGHT = app.box.size.y + Atom.r

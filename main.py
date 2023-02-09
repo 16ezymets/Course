@@ -1,7 +1,9 @@
 import pygame
 from sprites import *
 
-FPS = 60
+FPS = 50
+TIMESTEP = 1 / FPS
+
 def animate():
     running = True
     # Процесс
@@ -9,10 +11,10 @@ def animate():
         # FPS
         clock.tick(FPS)
         # Закрытие Окна
-        for close in pygame.event.get():
-            if close.type == pygame.QUIT:
+        for ev in pygame.event.get():
+            if ev.type == pygame.QUIT:
                 running = False
-        app.run()
+        app.run(TIMESTEP)
         # Поле
         screen.fill(BLACK)
         # Спрайты

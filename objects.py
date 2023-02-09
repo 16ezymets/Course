@@ -7,13 +7,13 @@ class Vector2d:
         self.x = float(x) if x is not None else None
         self.y = float(y) if y is not None else None
 
-    def __pow__(self, other):
-        if not isinstance(other, int):
-            return NotImplemented
-        return Vector2d(self.x ** other, self.y ** other)
+    #def __pow__(self, other):
+    #    if not isinstance(other, int):
+    #        return NotImplemented
+    #    return Vector2d(self.x ** other, self.y ** other)
 
     def __mul__(self, other):
-        if not isinstance(other, float|int):
+        if not isinstance(other, float | int):
             return NotImplemented
         return Vector2d(self.x * other, self.y * other)
 
