@@ -1,5 +1,5 @@
 from math import atan, cos, sin, sqrt
-import pygame
+
 
 
 class Vector2d:
@@ -90,12 +90,9 @@ class Atom:
                     #  создаем событие
                     e = Event(self, other, cur_time+t, newv1, newv2)
                     return e
-                else:
-                    return None
-            else:
                 return None
-        else:
-            return NotImplemented
+            return None
+        return NotImplemented
 
 
 class Box:

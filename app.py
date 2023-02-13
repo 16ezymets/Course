@@ -25,7 +25,7 @@ class App:
         endruntime = self.cur_time + timestep
         while endruntime > self.cur_time:
             if e.time > self.cur_time + timestep:
-                print('.', end='')
+                #print('.', end='')
                 #self.count += 1
                 for a in self.atoms:
                     a.move(timestep)

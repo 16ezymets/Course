@@ -1,7 +1,7 @@
-import pygame
+import sys
 from sprites import *
 
-FPS = 50
+FPS = 30
 TIMESTEP = 1 / FPS
 
 def animate():
@@ -13,7 +13,7 @@ def animate():
         # Закрытие Окна
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
-                running = False
+                sys.exit()
         app.run(TIMESTEP)
         # Поле
         screen.fill(BLACK)
@@ -22,7 +22,6 @@ def animate():
         all_sprites.draw(screen)
         # Обновление экрана
         pygame.display.flip()
-    pygame.quit()
 
 
 if __name__ == "__main__":
