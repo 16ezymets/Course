@@ -1,51 +1,5 @@
-from math import atan, cos, sin, sqrt
-
-
-
-class Vector2d:
-    def __init__(self, x: float, y: float):
-        self.x = float(x) if x is not None else None
-        self.y = float(y) if y is not None else None
-
-    #def __pow__(self, other):
-    #    if not isinstance(other, int):
-    #        return NotImplemented
-    #    return Vector2d(self.x ** other, self.y ** other)
-
-    def __mul__(self, other):
-        if not isinstance(other, float | int):
-            return NotImplemented
-        return Vector2d(self.x * other, self.y * other)
-
-    def __add__(self, other):
-        if not isinstance(other, Vector2d):
-            return NotImplemented
-        return Vector2d(self.x + other.x, self.y + other.y)
-
-    def __radd__(self, other):
-        if not isinstance(other, Vector2d):
-            return NotImplemented
-        self.x += other.x
-        self.y += other.y
-        return self
-
-    def __sub__(self, other):
-        if not isinstance(other, Vector2d):
-            return NotImplemented
-        return Vector2d(self.x - other.x, self.y - other.y)
-
-    def __rsub__(self, other):
-        if not isinstance(other, Vector2d):
-            return NotImplemented
-        self.x -= other.x
-        self.y -= other.y
-        return self
-
-    def __repr__(self):
-        return f"({self.x}, {self.y})"
-
-    def dist_2(self, other):
-        return (other.x-self.x)**2 +(other.y-self.y)**2
+from vector2d import Vector2d
+from tmatrix import TMatrix
 
 
 class Atom:
@@ -72,19 +26,26 @@ class Atom:
             d = b*b - 4*a*c
             if d > 0:
                 d_sqrt = d ** 0.5
-                t1 = (-b - d_sqrt) / (2 * a)
-                t2 = (-b + d_sqrt) / (2 * a)
-                #assert(t1 * t2 >= 0)
-                t = min(t1, t2)
+                _t1 = (-b - d_sqrt) / (2 * a)
+                _t2 = (-b + d_sqrt) / (2 * a)
+                t1 = round(_t1, 10)
+                t2 = round(_t2, 10)
+                #assert(t1 * t2 > 0)
+                if t1 * t2 > 0:
+                    t = min(t1, t2)
+                else:
+                    t = t1 if abs(t1) > abs(t2) else t2
                 if t > 0:
                     #  матрица перехода между системами отсчёта
-                    tm = TMatrix(self.position, other.position)
+                    pos1 = self.position + self.velocity * t
+                    pos2 = other.position + other.velocity * t
+                    tm = TMatrix(pos1, pos2)
                     #  перейдем в систему отсчета столкновения
                     v1 = tm.trans(self.velocity)
                     v2 = tm.trans(other.velocity)
                     #  физика: динамика
                     v1.x, v2.x = v2.x, v1.x
-                    #  вернемся в исходную систему отсчета
+                    #  вернёмся в исходную систему отсчёта
                     newv1 = tm.back(v1)
                     newv2 = tm.back(v2)
                     #  создаем событие
@@ -147,24 +108,4 @@ class Event:
         self.newv2 = v2
             # Событие между двумя объектами и их новые скорости
 
-
-class TMatrix:
-    def __init__(self, pos1, pos2):
-        dx = pos2.x - pos1.x
-        dy = pos2.y - pos1.y
-        phi = atan(dx/dy) if dy else 0
-        assert(isinstance(phi, float))
-        self.a11 = self.a22 = cos(phi)
-        self.a21 = sin(phi)
-        self.a12 = -sin(phi)
-
-    def trans(self, v):
-        x = v.x * self.a11 + v.y * self.a12
-        y = v.x * self.a21 + v.y * self.a22
-        return Vector2d(x, y)
-
-    def back(self, v):
-        x = v.x * self.a11 + v.y * self.a21
-        y = v.x * self.a12 + v.y * self.a22
-        return Vector2d(x, y)
 

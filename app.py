@@ -1,43 +1,62 @@
+import random
 
 from objects import *
 from func import *
 
 
+ATOM_COUNT = 200
+MAX_SPEED = 100
+WIDTH = 900
+HEIGHT = 600
+
 class App:
     def __init__(self):
-        self.events: list[Event] = []
-        self.atoms = [
-            #Atom(Vector2d(105, 24), Vector2d(5, 4)),
-            #Atom(Vector2d(40, 404), Vector2d(10, 55)),
-            Atom(Vector2d(45, 24), Vector2d(20, 30)),
-            Atom(Vector2d(40, 404), Vector2d(20, 55)),
-        ]
-        print(f"v1:{self.atoms[0].velocity}  v2:{self.atoms[1].velocity} ")
         self.box = Box(Vector2d(900, 600))
+        self.events: list[Event] = []
         self.cur_time = 0
+        self.atoms = App.create_atoms()
         self.events = self.calc_all_collisions()
-            # Создание всех объектов
-        #self.count = 0
+
+    @staticmethod
+    def create_atoms() -> list[Atom]:
+        d2 = (2*Atom.r)**2
+        atoms = []
+
+        def is_bad_pos(_x: int, _y: int, _atoms: list[Atom]) -> bool:
+            #  проверка наложения точки (x, y) с каким-то из уже имеющихся атомов
+            for a in _atoms:
+                if a.position.dist_2_xy(_x, _y) < d2:
+                    return True
+            return False
+
+        for _ in range(ATOM_COUNT):
+            x = random.randint(0, WIDTH - 1)
+            y = random.randint(0, HEIGHT - 1)
+            while is_bad_pos(x, y, atoms):
+                x = random.randint(0, WIDTH - 1)
+                y = random.randint(0, HEIGHT - 1)
+            vx = random.randint(-MAX_SPEED, MAX_SPEED)
+            vy = random.randint(-MAX_SPEED, MAX_SPEED)
+            atom = Atom(Vector2d(x, y), Vector2d(vx, vy))
+            atoms.append(atom)
+        return atoms
 
     def run(self, timestep):
+        # Рабочий процесс
         assert(len(self.events) > 0)
         e: Event = self.events[0]
         endruntime = self.cur_time + timestep
         while endruntime > self.cur_time:
             if e.time > self.cur_time + timestep:
-                #print('.', end='')
-                #self.count += 1
                 for a in self.atoms:
                     a.move(timestep)
                 self.cur_time += timestep
                 break
             else:
-                print('#')
                 for a in self.atoms:
                     a.move(e.time - self.cur_time)
                 e.obj1.velocity = e.newv1
                 e.obj2.velocity = e.newv2
-                print(f"x: v1:{self.atoms[0].velocity}  v2:{self.atoms[1].velocity} ")
                 self.cleanup(e.obj1)
                 self.cleanup(e.obj2)
                 self.cur_time = e.time
@@ -47,7 +66,6 @@ class App:
                 self.events = sorted_merge(self.events, add)
                 assert (len(self.events) > 0)
                 e = self.events[0]
-                    # Рабочий процесс
 
     def calc_all_collisions(self):
         events: list[Event] = []

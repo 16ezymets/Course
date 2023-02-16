@@ -1,7 +1,7 @@
 import sys
 from sprites import *
 
-FPS = 30
+FPS = 25
 TIMESTEP = 1 / FPS
 
 def animate():
