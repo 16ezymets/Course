@@ -7,12 +7,14 @@ class App:
     def __init__(self):
         self.events: list[Event] = []
         self.atoms = [
-            #Atom(Vector2d(105, 24), Vector2d(5, 4)),
-            #Atom(Vector2d(40, 404), Vector2d(10, 55)),
-            Atom(Vector2d(45, 24), Vector2d(20, 30)),
-            Atom(Vector2d(40, 404), Vector2d(20, 55)),
+            Atom(Vector2d(40, 24), Vector2d(30, 30)),
+            Atom(Vector2d(40, 404), Vector2d(30, 55)),
+            Atom(Vector2d(99, 84), Vector2d(40, 70)),
+            # Atom(Vector2d(33, 123), Vector2d(90, 55)),
+            # Atom(Vector2d(111, 222), Vector2d(40, 30)),
+            # Atom(Vector2d(23, 0), Vector2d(80, 55)),
         ]
-        print(f"v1:{self.atoms[0].velocity}  v2:{self.atoms[1].velocity} ")
+        #print(f"v1:{self.atoms[0].velocity}  v2:{self.atoms[1].velocity} ")
         self.box = Box(Vector2d(900, 600))
         self.cur_time = 0
         self.events = self.calc_all_collisions()
@@ -32,12 +34,12 @@ class App:
                 self.cur_time += timestep
                 break
             else:
-                print('#')
+                #print('#')
                 for a in self.atoms:
                     a.move(e.time - self.cur_time)
                 e.obj1.velocity = e.newv1
                 e.obj2.velocity = e.newv2
-                print(f"x: v1:{self.atoms[0].velocity}  v2:{self.atoms[1].velocity} ")
+                #print(f"x: v1:{self.atoms[0].velocity}  v2:{self.atoms[1].velocity} ")
                 self.cleanup(e.obj1)
                 self.cleanup(e.obj2)
                 self.cur_time = e.time
