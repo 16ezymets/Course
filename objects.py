@@ -2,12 +2,17 @@ from vector2d import Vector2d
 from tmatrix import TMatrix
 
 
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+RED = (255, 64, 64)
+
 class Atom:
     r: int | float   # радиус атома
 
-    def __init__(self, position: Vector2d, velocity: Vector2d):
+    def __init__(self, position: Vector2d, velocity: Vector2d, color):
         self.position = position
         self.velocity = velocity
+        self.color = color
 
     def move(self, t: float):
         self.position += self.velocity * float(t)

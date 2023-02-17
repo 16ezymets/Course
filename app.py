@@ -4,8 +4,18 @@ from objects import *
 from func import *
 
 
-ATOM_COUNT = 100
-MAX_SPEED = 100
+#  параметры газа
+#Atom.r = 0.1
+#ATOM_COUNT = 1000
+#Atom.r = 5
+#ATOM_COUNT = 300
+Atom.r = 16
+ATOM_COUNT = 200
+
+MAX_SPEED = 200
+RED_PART = 20
+
+#  параметры бокса (экрана)
 WIDTH = 1200
 HEIGHT = 800
 
@@ -38,7 +48,8 @@ class App:
                 y = random.randint(0, HEIGHT - 1)
             vx = random.randint(-MAX_SPEED, MAX_SPEED)
             vy = random.randint(-MAX_SPEED, MAX_SPEED)
-            atom = Atom(Vector2d(x, y), Vector2d(vx, vy))
+            color = RED if random.randint(0, RED_PART) == 0 else WHITE
+            atom = Atom(Vector2d(x, y), Vector2d(vx, vy), color)
             atoms.append(atom)
         return atoms
 

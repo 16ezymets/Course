@@ -1,11 +1,9 @@
 import pygame
-from objects import Atom
+from objects import *
 from app import App
 
 
-Atom.r = 16
-WHITE = (255, 255, 255)
-
+MIN_DRAW_RADIUS = 2
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, a: Atom):
@@ -21,7 +19,7 @@ class Sprite(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.center = (self.a.position.x, self.a.position.y)
-        pygame.draw.circle(screen, WHITE, self.rect.center, self.a.r)
+        pygame.draw.circle(screen, self.a.color, self.rect.center, max(MIN_DRAW_RADIUS, self.a.r))
 
 
 # Основное для PyGame
@@ -31,11 +29,6 @@ clock = pygame.time.Clock()
 width = app.box.size.x + Atom.r
 height = app.box.size.y + Atom.r
 screen = pygame.display.set_mode((width, height))
-
-# Параметры PyGame
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 0, 0)
 
 # Создание спрайтов
 all_sprites = pygame.sprite.Group()
