@@ -1,5 +1,5 @@
 import pygame
-from objects import *
+from atom import *
 from app import App
 
 

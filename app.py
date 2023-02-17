@@ -1,7 +1,7 @@
 import random
-
-from objects import *
-from func import *
+from box import Box
+from atom import *
+from sorted_merge import *
 
 
 #  параметры газа
