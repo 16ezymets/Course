@@ -5,6 +5,7 @@ from app import App
 
 MIN_DRAW_RADIUS = 2
 
+
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, a: Atom):
         pygame.sprite.Sprite.__init__(self)
