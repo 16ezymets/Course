@@ -1,10 +1,10 @@
 import sys
 from sprites import *
 
-FPS = 25
+FPS = 30
 TIMESTEP = 1 / FPS
 
-def animate():
+def main():
     running = True
     # Процесс
     while running:
@@ -25,6 +25,6 @@ def animate():
 
 
 if __name__ == "__main__":
-    animate()
+    main()
 
 

@@ -4,14 +4,14 @@ from objects import *
 from func import *
 
 
-ATOM_COUNT = 200
+ATOM_COUNT = 100
 MAX_SPEED = 100
 WIDTH = 900
 HEIGHT = 600
 
 class App:
     def __init__(self):
-        self.box = Box(Vector2d(900, 600))
+        self.box = Box(Vector2d(WIDTH, HEIGHT))
         self.events: list[Event] = []
         self.cur_time = 0
         self.atoms = App.create_atoms()
@@ -41,12 +41,12 @@ class App:
             atoms.append(atom)
         return atoms
 
-    def run(self, timestep):
-        # Рабочий процесс
+    def run(self, timestep: float):
+        # рассчет кадра через timestep
         assert(len(self.events) > 0)
         e: Event = self.events[0]
-        endruntime = self.cur_time + timestep
-        while endruntime > self.cur_time:
+        end_step_time = self.cur_time + timestep
+        while end_step_time > self.cur_time:
             if e.time > self.cur_time + timestep:
                 for a in self.atoms:
                     a.move(timestep)

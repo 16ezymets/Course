@@ -5,7 +5,7 @@ from app import App
 
 
 # Загрузка изображения
-Atom.r = 8
+Atom.r = 16
 WHITE = (255, 255, 255)
 
 class Sprite(pygame.sprite.Sprite):
@@ -14,7 +14,7 @@ class Sprite(pygame.sprite.Sprite):
         self.a = a
         d = 2*a.r
         self.image = pygame.Surface((d, d))
-        self.image = pygame.Surface((0, 0))
+        self.image = pygame.Surface((0, 0))     #  круги пока рисуются прямо в update()
         self.image.fill(WHITE)
         self.rect = pygame.Rect(a.position.x - a.r, a.position.y - a.r, d, d)
         self.rect.center = (self.a.position.x, self.a.position.y)
