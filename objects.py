@@ -3,8 +3,7 @@ from tmatrix import TMatrix
 
 
 class Atom:
-    r = 0
-    # Характеристики атома
+    r: int | float   # радиус атома
 
     def __init__(self, position: Vector2d, velocity: Vector2d):
         self.position = position

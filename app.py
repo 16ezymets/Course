@@ -6,8 +6,9 @@ from func import *
 
 ATOM_COUNT = 100
 MAX_SPEED = 100
-WIDTH = 900
-HEIGHT = 600
+WIDTH = 1200
+HEIGHT = 800
+
 
 class App:
     def __init__(self):
@@ -67,7 +68,21 @@ class App:
                 assert (len(self.events) > 0)
                 e = self.events[0]
 
+    def hot_stat(self):
+        e = 0
+        px = 0
+        py = 0
+        for a in self.atoms:
+            e += a.velocity.x**2 + a.velocity.y**2
+            px += a.velocity.x
+            py += a.velocity.y
+        e = round(e, 2)
+        px = round(px, 2)
+        py = round(py, 2)
+        return f"{e=} {px=} {py=}"
+
     def calc_all_collisions(self):
+        # Подсчет всех будущих столкновений атомов и сортировка по времени
         events: list[Event] = []
         for i in range(len(self.atoms)):
             for j in range(i + 1, len(self.atoms)):
@@ -77,9 +92,9 @@ class App:
             events += self.box.collide(self.atoms[i], self.cur_time)
         events.sort(key=lambda e: e.time)
         return events
-                # Подсчет всех будущих столкновений атомов и сортировка по времени
 
     def calc_collisions(self, a):
+        # Подсчет столновений атома с другими атомами и сортировка по времени
         events: list[Event] = []
         if isinstance(a, Atom):
             for b in self.atoms:
@@ -90,13 +105,9 @@ class App:
             events += self.box.collide(a, self.cur_time)
         events.sort(key=lambda e: e.time)
         return events
-                # Подсчет столновений атома с другими атомами и сортировка по времени
 
     def cleanup(self, obj) -> None:
+        # Очистка всех событий, связанных с определенным атомом
         if isinstance(obj, Atom):
             self.events = [e for e in self.events if e.obj1 != obj and e.obj2 != obj]
-            # Очистка всех событий, связанных с определенным атомом
-
-#Основное приложение
-
 

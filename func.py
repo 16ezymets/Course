@@ -1,4 +1,6 @@
 from objects import Atom
+
+
 def sorted_merge(sp1, sp2):
     events = []
     i = 0
@@ -16,14 +18,4 @@ def sorted_merge(sp1, sp2):
         else:
             events.append(sp2[j])
             j += 1
-    return events  # Сортировка
-
-
-'''
-def atom_hit(atom1, atom2):
-    TMatrix(atom1.position, atom2.position)
-    tan1 = atom1.velocity.y / atom1.velocity.x
-    v1 = sqrt(atom1.velocity.x**2 + atom1.velocity.y**2)
-    atom1.velocity.x = v1 * cos(atan(tan1) - atan(dx/dy))
-    atom2.velocity.x = ...
-'''
+    return events

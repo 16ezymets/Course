@@ -3,10 +3,9 @@ from objects import Atom
 from app import App
 
 
-
-# Загрузка изображения
 Atom.r = 16
 WHITE = (255, 255, 255)
+
 
 class Sprite(pygame.sprite.Sprite):
     def __init__(self, a: Atom):
@@ -25,19 +24,20 @@ class Sprite(pygame.sprite.Sprite):
         pygame.draw.circle(screen, WHITE, self.rect.center, self.a.r)
 
 
+# Основное для PyGame
 app = App()
-WIDTH = app.box.size.x + Atom.r
-HEIGHT = app.box.size.y + Atom.r
 pygame.init()
 clock = pygame.time.Clock()
-pygame.display.set_caption("Perfect Gas")
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-# Основное для PyGame
+width = app.box.size.x + Atom.r
+height = app.box.size.y + Atom.r
+screen = pygame.display.set_mode((width, height))
+
+# Параметры PyGame
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)
-# Параметры PyGame
+
+# Создание спрайтов
 all_sprites = pygame.sprite.Group()
 all_sprites.add([Sprite(a) for a in app.atoms])
 all_sprites.update()
-# Создание спрайтов
