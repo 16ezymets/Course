@@ -5,12 +5,12 @@ from sorted_merge import *
 
 
 #  параметры газа
-Atom.r = 0.2
+Atom.r = 0.4
 ATOM_COUNT = 1000
 #Atom.r = 5
 #ATOM_COUNT = 300
-#Atom.r = 16
-#ATOM_COUNT = 200
+Atom.r = 16
+ATOM_COUNT = 200
 
 MAX_SPEED = 200
 RED_PART = 20
@@ -94,7 +94,7 @@ class App:
         px = round(px, 2)
         py = round(py, 2)
         cnt = len(self.events)
-        return f"moves:{self.move_count:02} {e=} {px=} {py=} {cnt=}"
+        return f"moves:{self.move_count:02} {e=} {px=} {py=} events_size:{cnt}"
 
     def calc_all_collisions(self):
         # Подсчет всех будущих столкновений атомов и сортировка по времени

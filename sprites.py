@@ -10,17 +10,15 @@ class Sprite(pygame.sprite.Sprite):
     def __init__(self, a: Atom):
         pygame.sprite.Sprite.__init__(self)
         self.a = a
-        d = 2*a.r
-        self.image = pygame.Surface((d, d))
-        self.image = pygame.Surface((0, 0))     #  круги пока рисуются прямо в update()
-        self.image.fill(WHITE)
-        self.rect = pygame.Rect(a.position.x - a.r, a.position.y - a.r, d, d)
+        r = max(MIN_DRAW_RADIUS, self.a.r)
+        d = 2*r
+        self.image = pygame.Surface((d, d), pygame.SRCALPHA)
+        pygame.draw.ellipse(self.image, a.color, [0, 0, d, d])
+        self.rect = self.image.get_rect()
         self.rect.center = (self.a.position.x, self.a.position.y)
-        self.rect.size = (Atom.r, Atom.r)
 
     def update(self):
         self.rect.center = (self.a.position.x, self.a.position.y)
-        pygame.draw.circle(screen, self.a.color, self.rect.center, max(MIN_DRAW_RADIUS, self.a.r))
 
 
 # Основное для PyGame
