@@ -5,12 +5,12 @@ from sorted_merge import *
 
 
 #  параметры газа
-#Atom.r = 0.1
-#ATOM_COUNT = 1000
+Atom.r = 0.2
+ATOM_COUNT = 1000
 #Atom.r = 5
 #ATOM_COUNT = 300
-Atom.r = 16
-ATOM_COUNT = 200
+#Atom.r = 16
+#ATOM_COUNT = 200
 
 MAX_SPEED = 200
 RED_PART = 20
@@ -58,7 +58,10 @@ class App:
         assert(len(self.events) > 0)
         e: Event = self.events[0]
         end_step_time = self.cur_time + timestep
+        #  count of moves on timestep (for stat only)
+        self.move_count = 0
         while end_step_time > self.cur_time:
+            self.move_count += 1
             if e.time > self.cur_time + timestep:
                 for a in self.atoms:
                     a.move(timestep)
@@ -69,9 +72,9 @@ class App:
                     a.move(e.time - self.cur_time)
                 e.obj1.velocity = e.newv1
                 e.obj2.velocity = e.newv2
+                self.cur_time = e.time
                 self.cleanup(e.obj1)
                 self.cleanup(e.obj2)
-                self.cur_time = e.time
                 events1 = self.calc_collisions(e.obj1)
                 events2 = self.calc_collisions(e.obj2)
                 add = sorted_merge(events1, events2)
@@ -90,7 +93,8 @@ class App:
         e = round(e, 2)
         px = round(px, 2)
         py = round(py, 2)
-        return f"{e=} {px=} {py=}"
+        cnt = len(self.events)
+        return f"moves:{self.move_count:02} {e=} {px=} {py=} {cnt=}"
 
     def calc_all_collisions(self):
         # Подсчет всех будущих столкновений атомов и сортировка по времени
@@ -114,7 +118,7 @@ class App:
                     if e:
                         events.append(e)
             events += self.box.collide(a, self.cur_time)
-        events.sort(key=lambda e: e.time)
+        events.sort(key=lambda el: el.time)
         return events
 
     def cleanup(self, obj) -> None:

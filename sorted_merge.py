@@ -2,19 +2,19 @@
 
 def sorted_merge(sp1, sp2):
     events = []
-    i = 0
-    j = 0
+    i1 = 0
+    i2 = 0
     for q in range(len(sp1) + len(sp2)):
-        if i == len(sp1):
-            events += sp2[j:]
+        if i1 == len(sp1):
+            events += sp2[i2:]
             break
-        elif j == len(sp2):
-            events += sp1[i:]
+        elif i2 == len(sp2):
+            events += sp1[i1:]
             break
-        elif sp1[i].time < sp2[j].time:
-            events.append(sp1[i])
-            i += 1
+        elif sp1[i1].time < sp2[i2].time:
+            events.append(sp1[i1])
+            i1 += 1
         else:
-            events.append(sp2[j])
-            j += 1
+            events.append(sp2[i2])
+            i2 += 1
     return events

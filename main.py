@@ -5,6 +5,7 @@ FPS = 60
 TIMESTEP = 1 / FPS
 TITLE = "Perfect Gas"
 
+
 def main():
     pygame.display.set_caption(TITLE)
     running = True
