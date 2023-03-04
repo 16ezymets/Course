@@ -4,7 +4,7 @@ from sprites import *
 FPS = 60
 TIMESTEP = 1 / FPS
 TITLE = "Perfect Gas"
-
+f1 = pygame.font.SysFont('arial', 20)
 
 def main():
     pygame.display.set_caption(TITLE)
@@ -24,6 +24,8 @@ def main():
         # Спрайты
         all_sprites.update()
         all_sprites.draw(screen)
+        text1 = f1.render(stat, True, (150, 255, 150))
+        screen.blit(text1, (1225, 0))
         # Обновление экрана
         pygame.display.flip()
         pygame.display.set_caption(TITLE + '  ' + stat)

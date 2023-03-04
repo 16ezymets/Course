@@ -6,7 +6,7 @@ from event import Event
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 RED = (255, 64, 64)
-
+BLUE = (100, 100, 255)
 
 class Atom:
     r: int | float   # радиус атома

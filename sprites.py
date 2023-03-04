@@ -21,15 +21,25 @@ class Sprite(pygame.sprite.Sprite):
         self.rect.center = (self.a.position.x, self.a.position.y)
 
 
-# Основное для PyGame
+class StScreen(pygame.sprite.Sprite):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.Surface((970, 850))
+        self.image.fill(BLUE)
+        self.rect = self.image.get_rect()
+        self.rect.center = (1700, 400)
+
+
 app = App()
 pygame.init()
+pygame.font.init()
 clock = pygame.time.Clock()
 width = app.box.size.x + Atom.r
 height = app.box.size.y + Atom.r
-screen = pygame.display.set_mode((width, height))
+screen = pygame.display.set_mode((width + 500, height))
+stats_screen = StScreen()
 
 # Создание спрайтов
 all_sprites = pygame.sprite.Group()
-all_sprites.add([Sprite(a) for a in app.atoms])
+all_sprites.add([Sprite(a) for a in app.atoms], stats_screen)
 all_sprites.update()
