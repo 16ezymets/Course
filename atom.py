@@ -10,6 +10,7 @@ BLUE = (100, 100, 255)
 
 class Atom:
     r: int | float   # радиус атома
+    m: int | float   # масса атома
 
     def __init__(self, position: Vector2d, velocity: Vector2d, color):
         self.position = position

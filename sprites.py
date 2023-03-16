@@ -4,6 +4,7 @@ from app import App
 
 
 MIN_DRAW_RADIUS = 2
+STAT_WIDTH = 300
 
 
 class Sprite(pygame.sprite.Sprite):
@@ -21,13 +22,13 @@ class Sprite(pygame.sprite.Sprite):
         self.rect.center = (self.a.position.x, self.a.position.y)
 
 
-class StScreen(pygame.sprite.Sprite):
-    def __init__(self):
+class StatScreen(pygame.sprite.Sprite):
+    def __init__(self, x, y, width, height):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((970, 850))
+        self.image = pygame.Surface((width, height))
         self.image.fill(BLUE)
         self.rect = self.image.get_rect()
-        self.rect.center = (1700, 400)
+        self.rect.center = (x + width // 2, y + height // 2)
 
 
 app = App()
@@ -36,8 +37,8 @@ pygame.font.init()
 clock = pygame.time.Clock()
 width = app.box.size.x + Atom.r
 height = app.box.size.y + Atom.r
-screen = pygame.display.set_mode((width + 500, height))
-stats_screen = StScreen()
+screen = pygame.display.set_mode((width + STAT_WIDTH, height))
+stats_screen = StatScreen(width, 0, STAT_WIDTH, height)
 
 # Создание спрайтов
 all_sprites = pygame.sprite.Group()

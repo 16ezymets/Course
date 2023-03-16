@@ -1,7 +1,7 @@
 class Vector2d:
     def __init__(self, x: float, y: float):
-        self.x = float(x) if x is not None else None
-        self.y = float(y) if y is not None else None
+        self.x = float(x) if (x is not None) else 0
+        self.y = float(y) if (y is not None) else 0
 
     def __mul__(self, other):
         if not isinstance(other, float | int):
@@ -39,5 +39,5 @@ class Vector2d:
         return (other.x-self.x)**2 +(other.y-self.y)**2
 
     def dist_2_xy(self, x, y):
-        return (x-self.x)**2 +(y-self.y)**2
+        return (x-self.x)**2 + (y-self.y)**2
 

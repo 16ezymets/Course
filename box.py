@@ -21,20 +21,20 @@ class Box:
         if a.velocity.x < 0:
             time = (-a.position.x+Atom.r) / a.velocity.x
             v = Vector2d(-a.velocity.x, a.velocity.y)
-            events.append(Event(a, self.borders[0], time + cur_time, v, 0))
+            events.append(Event(a, self.borders[0], time + cur_time, v, Vector2d(0, 0)))
         elif a.velocity.x > 0:
             time = (self.size.x - a.position.x) / a.velocity.x
             v = Vector2d(-a.velocity.x, a.velocity.y)
-            events.append(Event(a, self.borders[1], time + cur_time, v, 0))
+            events.append(Event(a, self.borders[1], time + cur_time, v, Vector2d(0, 0)))
         #  по вертикали
         if a.velocity.y < 0:
             time = (-a.position.y+Atom.r) / a.velocity.y
             v = Vector2d(a.velocity.x, -a.velocity.y)
-            events.append(Event(a, self.borders[2], time + cur_time, v, 0))
+            events.append(Event(a, self.borders[2], time + cur_time, v, Vector2d(0, 0)))
         elif a.velocity.y > 0:
             time = (self.size.y - a.position.y) / a.velocity.y
             v = Vector2d(a.velocity.x, -a.velocity.y)
-            events.append(Event(a, self.borders[3], time + cur_time, v, 0))
+            events.append(Event(a, self.borders[3], time + cur_time, v, Vector2d(0, 0)))
         return events
                 # Атом врезался в стенку
 

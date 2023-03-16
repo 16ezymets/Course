@@ -5,6 +5,7 @@ from sorted_merge import *
 
 
 #  параметры газа
+Atom.m = 10**(-24)
 Atom.r = 0.4
 ATOM_COUNT = 1000
 #Atom.r = 5
@@ -18,6 +19,10 @@ RED_PART = 20
 #  параметры бокса (экрана)
 WIDTH = 1200
 HEIGHT = 800
+SCALE = 0.001   # 1 mm per point
+DEPTH = 1       # in meters
+
+STAT_MOVE_COUNT = 60
 
 
 class App:
@@ -27,6 +32,7 @@ class App:
         self.cur_time = 0
         self.atoms = App.create_atoms()
         self.events = self.calc_all_collisions()
+        self.impulse_diff = [[0, 0, 0, 0] for _ in range(STAT_MOVE_COUNT)]
 
     @staticmethod
     def create_atoms() -> list[Atom]:
@@ -60,6 +66,7 @@ class App:
         end_step_time = self.cur_time + timestep
         #  count of moves on timestep (for stat only)
         self.move_count = 0
+        impulse_diff = [0, 0, 0, 0]
         while end_step_time > self.cur_time:
             self.move_count += 1
             if e.time > self.cur_time + timestep:
@@ -70,6 +77,8 @@ class App:
             else:
                 for a in self.atoms:
                     a.move(e.time - self.cur_time)
+                if e.obj2 == self.box.borders[0]:
+                    impulse_diff[0] += (e.newv1.x - e.obj1.velocity.x) * e.obj1.m
                 e.obj1.velocity = e.newv1
                 e.obj2.velocity = e.newv2
                 self.cur_time = e.time
@@ -81,6 +90,8 @@ class App:
                 self.events = sorted_merge(self.events, add)
                 assert (len(self.events) > 0)
                 e = self.events[0]
+        self.impulse_diff.pop(0)
+        self.impulse_diff.append([impulse_diff[0] / timestep, 0, 0, 0])
 
     def hot_stat(self):
         e = 0
@@ -90,15 +101,17 @@ class App:
             e += a.velocity.x**2 + a.velocity.y**2
             px += a.velocity.x
             py += a.velocity.y
-        e = round(e, 2)
+        e = round(e / len(self.atoms) / 2, 2)
         px = round(px, 2)
         py = round(py, 2)
         cnt = len(self.events)
+        left_pressure = sum(diff[0] for diff in self.impulse_diff) / (self.box.size.y * SCALE * DEPTH)
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
                 f"X-impulse: {px}",
                 f"Y-impulse: {py}",
-                f"Events_count: {cnt}"]
+                f"Events_count: {cnt}",
+                f"Left Pressure: {left_pressure}"]
 
     def calc_all_collisions(self):
         # Подсчет всех будущих столкновений атомов и сортировка по времени
