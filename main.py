@@ -24,11 +24,15 @@ def main():
         # Спрайты
         all_sprites.update()
         all_sprites.draw(screen)
-        text1 = f1.render(stat, True, (150, 255, 150))
-        screen.blit(text1, (1225, 0))
+        h = 0
+        for line in stat:
+            text = f1.render(line, True, (150, 255, 150))
+            screen.blit(text, (1225, h))
+            h += 20
         # Обновление экрана
         pygame.display.flip()
-        pygame.display.set_caption(TITLE + '  ' + stat)
+        #stat_text = " ".join(stat)
+        #pygame.display.set_caption(TITLE + '  ' + stat_text)
 
 
 if __name__ == "__main__":

@@ -94,7 +94,11 @@ class App:
         px = round(px, 2)
         py = round(py, 2)
         cnt = len(self.events)
-        return f"moves:{self.move_count:02} {e=} {px=} {py=} events_size:{cnt}"
+        return [f"Moves for step: {self.move_count:02}",
+                f"Total energy: {e}",
+                f"X-impulse: {px}",
+                f"Y-impulse: {py}",
+                f"Events_count: {cnt}"]
 
     def calc_all_collisions(self):
         # Подсчет всех будущих столкновений атомов и сортировка по времени
