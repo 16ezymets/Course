@@ -4,7 +4,7 @@ from app import App
 
 
 MIN_DRAW_RADIUS = 2
-STAT_WIDTH = 300
+STAT_WIDTH = 350
 
 
 class Sprite(pygame.sprite.Sprite):
