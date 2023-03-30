@@ -22,8 +22,8 @@ HEIGHT = 800
 SCALE = 0.001   # 1 mm per point
 DEPTH = 1       # in meters
 
-STAT_MOVE_COUNT = 60
-
+STAT_MOVE_COUNT = 300
+# чем больше STAT_MOVE_COUNT, тем точнее вычесление давления
 
 class App:
     def __init__(self):
@@ -79,6 +79,12 @@ class App:
                     a.move(e.time - self.cur_time)
                 if e.obj2 == self.box.borders[0]:
                     impulse_diff[0] += (e.newv1.x - e.obj1.velocity.x) * e.obj1.m
+                if e.obj2 == self.box.borders[1]:
+                    impulse_diff[1] += (e.obj1.velocity.x - e.newv1.x) * e.obj1.m
+                if e.obj2 == self.box.borders[2]:
+                    impulse_diff[2] += (e.newv1.y - e.obj1.velocity.y) * e.obj1.m
+                if e.obj2 == self.box.borders[3]:
+                    impulse_diff[3] += (e.obj1.velocity.y - e.newv1.y) * e.obj1.m
                 e.obj1.velocity = e.newv1
                 e.obj2.velocity = e.newv2
                 self.cur_time = e.time
@@ -91,7 +97,7 @@ class App:
                 assert (len(self.events) > 0)
                 e = self.events[0]
         self.impulse_diff.pop(0)
-        self.impulse_diff.append([impulse_diff[0] / timestep, 0, 0, 0])
+        self.impulse_diff.append([impulse_diff[0] / timestep, impulse_diff[1] / timestep, impulse_diff[2] / timestep, impulse_diff[3] / timestep])
 
     def hot_stat(self):
         e = 0
@@ -106,12 +112,18 @@ class App:
         py = round(py, 2)
         cnt = len(self.events)
         left_pressure = sum(diff[0] for diff in self.impulse_diff) / (self.box.size.y * SCALE * DEPTH)
+        right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.size.y * SCALE * DEPTH)
+        top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.size.x * SCALE * DEPTH)
+        bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.size.x * SCALE * DEPTH)
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
                 f"X-impulse: {px}",
                 f"Y-impulse: {py}",
                 f"Events_count: {cnt}",
-                f"Left Pressure: {left_pressure}"]
+                f"Left Pressure: {left_pressure}",
+                f"Right Pressure: {right_pressure}",
+                f"Top Pressure: {top_pressure}",
+                f"Bottom Pressure: {bottom_pressure}"]
 
     def calc_all_collisions(self):
         # Подсчет всех будущих столкновений атомов и сортировка по времени
