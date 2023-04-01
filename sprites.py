@@ -1,10 +1,6 @@
-import pygame
-from atom import *
-from app import App
 
-
-MIN_DRAW_RADIUS = 2
-STAT_WIDTH = 350
+from box import Border
+from screen_settings import *
 
 
 class Sprite(pygame.sprite.Sprite):
@@ -31,16 +27,24 @@ class StatScreen(pygame.sprite.Sprite):
         self.rect.center = (x + width // 2, y + height // 2)
 
 
-app = App()
-pygame.init()
-pygame.font.init()
-clock = pygame.time.Clock()
-width = app.box.size.x + Atom.r
-height = app.box.size.y + Atom.r
-screen = pygame.display.set_mode((width + STAT_WIDTH, height))
-stats_screen = StatScreen(width, 0, STAT_WIDTH, height)
+class Piston(pygame.sprite.Sprite):
+    def __init__(self, border: Border):
+        pygame.sprite.Sprite.__init__(self)
+        self.border = border
+        self.x = border.position.x
+        self.y = border.position.y
+        self.velocity = border.velocity.x if (border.velocity.x is not None) else border.velocity.y
+        self.image = pygame.Surface((self.x, height))
+        self.image.fill(BLUE)
+        self.rect = self.image.get_rect()
+        if self.x is not None:
+            self.rect.center = (self.x // 2, height // 2)
+        else:
+            self.rect.center = (self.y // 2, width)
 
-# Создание спрайтов
-all_sprites = pygame.sprite.Group()
-all_sprites.add([Sprite(a) for a in app.atoms], stats_screen)
-all_sprites.update()
+    def update(self):
+        if self.x is not None:
+            self.rect.center = (self.x // 2 + self.border.velocity.x, height // 2)
+        else:
+            self.rect.center = (width, self.x + self.border.velocity.y)
+

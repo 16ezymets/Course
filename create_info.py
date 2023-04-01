@@ -9,5 +9,5 @@ def create_info():
     # ввод скорости стенки
     for i in range(len(stat)):
         text1 = f1.render(stat[i], True, (150, 255, 150))
-        screen.blit(text1, (1225, 0 + pix))
+        screen.blit(text1, (width + 7, 0 + pix))
         pix += 40

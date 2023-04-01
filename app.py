@@ -59,7 +59,7 @@ class App:
             atoms.append(atom)
         return atoms
 
-    def run(self, timestep: float):
+    def step(self, timestep: float):
         # рассчет кадра через timestep
         assert(len(self.events) > 0)
         e: Event = self.events[0]
