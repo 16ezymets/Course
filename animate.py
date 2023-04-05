@@ -2,12 +2,10 @@ import sys
 from create_sprites import *
 from create_info import *
 
-k = 0
+
 def animate(fps: int, timestep: float | int):
     running = True
     while running:
-        global k
-        k += 1
         # FPS
         clock.tick(fps)
         # Window closing
