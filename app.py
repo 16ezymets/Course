@@ -50,13 +50,11 @@ class App:
         while end_step_time > self.cur_time:
             self.move_count += 1
             if e.time > self.cur_time + timestep:
-                for a in self.atoms:
-                    a.move(timestep)
+                self.move(timestep)
                 self.cur_time += timestep
                 break
             else:
-                for a in self.atoms:
-                    a.move(e.time - self.cur_time)
+                self.move(e.time - self.cur_time)
                 if e.obj2 == self.box.borders[0]:
                     impulse_diff[0] += (e.newv1.x - e.obj1.velocity.x) * e.obj1.m
                 if e.obj2 == self.box.borders[1]:
@@ -79,6 +77,11 @@ class App:
         self.impulse_diff.pop(0)
         self.impulse_diff.append([impulse_diff[0] / timestep, impulse_diff[1] / timestep, impulse_diff[2] / timestep, impulse_diff[3] / timestep])
 
+    def move(self, timestep):
+        for a in self.atoms:
+            a.move(timestep)
+        self.box.move_borders(timestep)
+
     def hot_stat(self):
         e = 0
         px = 0
@@ -91,10 +94,10 @@ class App:
         px = round(px, 2)
         py = round(py, 2)
         cnt = len(self.events)
-        left_pressure = sum(diff[0] for diff in self.impulse_diff) / (self.box.size.y * SCALE * DEPTH)
-        right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.size.y * SCALE * DEPTH)
-        top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.size.x * SCALE * DEPTH)
-        bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.size.x * SCALE * DEPTH)
+        left_pressure = sum(diff[0] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
+        right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
+        top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
+        bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
                 f"X-impulse: {px}",
@@ -114,7 +117,7 @@ class App:
                 if e:
                     events.append(e)
             events += self.box.collide(self.atoms[i], self.cur_time)
-        events.sort(key=lambda e: e.time)
+        events.sort(key=lambda el: el.time)
         return events
 
     def calc_collisions(self, a):

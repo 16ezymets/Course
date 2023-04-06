@@ -11,8 +11,9 @@ Atom.m = 10**(-24)
 #ATOM_COUNT = 300
 
 Atom.r = 16
-ATOM_COUNT = 200
+ATOM_COUNT = 50
 
+BOX_SPEED = 20
 MAX_SPEED = 200
 RED_PART = 20
 
