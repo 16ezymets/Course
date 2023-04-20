@@ -1,8 +1,8 @@
 from vector2d import Vector2d
-from atom import Atom, BLUE
 from event import Event
-import screen_settings
-from constants import BOX_SPEED
+from atom import Atom
+from settings import *
+
 
 
 
@@ -48,15 +48,17 @@ class Border:
 
     def collide(self, a: Atom, cur_time: float) -> list:
         if self.position.x is not None:
+            assert(self.position.y is None)
             #  по горизонтали
             dist = a.position.x - self.position.x
-            dist = dist - Atom.r if dist > 0 else dist + Atom.r
+            #dist = (dist - Atom.r) if dist > 0 else (dist + Atom.r)
             speed = a.velocity.x - self.velocity.x
             v = Vector2d(-a.velocity.x + 2 * self.velocity.x, a.velocity.y)
         else:
+            assert(self.position.y is not None)
             #  по вертикали
             dist = a.position.y - self.position.y
-            dist = dist - Atom.r if dist > 0 else dist + Atom.r
+            #dist = (dist - Atom.r) if dist > 0 else (dist + Atom.r)
             speed = a.velocity.y - self.velocity.y
             v = Vector2d(a.velocity.x, -a.velocity.y + 2 * self.velocity.y)
 

@@ -1,5 +1,8 @@
+import pygame
+from atom import Atom
+from box import Border
 
-from screen_settings import *
+from settings import *
 
 
 class Sprite(pygame.sprite.Sprite):
@@ -15,6 +18,16 @@ class Sprite(pygame.sprite.Sprite):
 
     def update(self):
         self.rect.center = (self.a.position.x, self.a.position.y)
+
+
+class BorderSprite(pygame.sprite.Sprite):
+    def __init__(self, b: Border):
+        pygame.sprite.Sprite.__init__(self)
+        self.b = b
+        self.image = pygame.Surface((b.position.x, HEIGHT))
+        self.image.fill(GRAY)
+        self.rect = self.image.get_rect()
+        self.rect.center = (b.position.x // 2, HEIGHT // 2)
 
 
 class StatScreen(pygame.sprite.Sprite):

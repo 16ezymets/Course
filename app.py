@@ -2,7 +2,7 @@ import random
 from box import Box
 from atom import *
 from sorted_merge import *
-from constants import *
+from settings import *
 
 
 class App:

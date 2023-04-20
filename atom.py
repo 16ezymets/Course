@@ -1,16 +1,13 @@
 from vector2d import Vector2d
 from tmatrix import TMatrix
 from event import Event
+from settings import *
 
 
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-RED = (255, 64, 64)
-BLUE = (100, 100, 255)
 
 class Atom:
-    r: int | float   # радиус атома
-    m: int | float   # масса атома
+    r: int = ATOM_R   # радиус атома
+    m: float = ATOM_M   # масса атома
 
     def __init__(self, position: Vector2d, velocity: Vector2d, color):
         self.position = position

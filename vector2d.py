@@ -1,7 +1,7 @@
 class Vector2d:
     def __init__(self, x: float, y: float):
-        self.x = float(x) if (x is not None) else 0
-        self.y = float(y) if (y is not None) else 0
+        self.x = float(x) if (x is not None) else None
+        self.y = float(y) if (y is not None) else None
 
     def __mul__(self, other):
         if not isinstance(other, float | int):
