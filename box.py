@@ -12,10 +12,10 @@ class Box:
         # Параметры ящика
         self.size = size
         self.borders = [
-            Border(Vector2d(0, None), Vector2d(BOX_SPEED, 0)),       # левый
-            Border(Vector2d(size.x, None), Vector2d(0, 0)),   # правый
-            Border(Vector2d(None, 0), Vector2d(0, 0)),        # верхний
-            Border(Vector2d(None, size.y), Vector2d(0, 0)),   # нижний
+            Border(Vector2d(0, None), Vector2d(BOX_SPEED, 0)),  # левый
+            Border(Vector2d(size.x, None), Vector2d(0, 0)),     # правый
+            Border(Vector2d(None, 0), Vector2d(0, 0)),          # верхний
+            Border(Vector2d(None, size.y), Vector2d(0, 0)),     # нижний
         ]
 
     def space_width(self):
@@ -53,14 +53,14 @@ class Border:
             dist = a.position.x - self.position.x
             #dist = (dist - Atom.r) if dist > 0 else (dist + Atom.r)
             speed = a.velocity.x - self.velocity.x
-            v = Vector2d(-a.velocity.x + 2 * self.velocity.x, a.velocity.y)
+            v = Vector2d(-(a.velocity.x + 2 * self.velocity.x), a.velocity.y)
         else:
             assert(self.position.y is not None)
             #  по вертикали
             dist = a.position.y - self.position.y
             #dist = (dist - Atom.r) if dist > 0 else (dist + Atom.r)
             speed = a.velocity.y - self.velocity.y
-            v = Vector2d(a.velocity.x, -a.velocity.y + 2 * self.velocity.y)
+            v = Vector2d(a.velocity.x, -(a.velocity.y + 2 * self.velocity.y))
 
         #if (dist > 0 and speed < 0) or (dist < 0 and speed > 0):
         if dist * speed < 0:

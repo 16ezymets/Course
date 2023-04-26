@@ -29,6 +29,11 @@ class BorderSprite(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (b.position.x // 2, HEIGHT // 2)
 
+    def update(self):
+        self.image = pygame.Surface((self.b.position.x, HEIGHT + ATOM_R))
+        self.rect.center = (0, HEIGHT // 2)
+        self.image.fill(GRAY)
+
 
 class StatScreen(pygame.sprite.Sprite):
     def __init__(self, x, y, width, height):

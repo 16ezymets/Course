@@ -1,5 +1,4 @@
 
-import pygame
 from app import App
 from sprites import *
 from settings import *
@@ -39,6 +38,7 @@ def main():
                 return
         # print(app.box.borders[0].position)
         app.step(timestep)
+        print(f'{app.atoms[0].velocity}, {app.atoms[0].position}           {app.cur_time}, {app.events[0].time}')
         # Screen
         screen.fill(BLACK)
         # Sprites
@@ -55,8 +55,8 @@ def fill_info(app, font, screen, width):
     stat = app.hot_stat()
     # ввод скорости стенки
     for i in range(len(stat)):
-        text1 = font.render(stat[i], True, (150, 255, 150))
-        screen.blit(text1, (width + 7, 0 + pix))
+        text1 = font.render(stat[i], True, STAT_COLOR)
+        screen.blit(text1, (width + 7, pix))
         pix += 40
 
 
