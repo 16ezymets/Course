@@ -38,7 +38,7 @@ def main():
                 return
         # print(app.box.borders[0].position)
         app.step(timestep)
-        print(f'{app.atoms[0].velocity}, {app.atoms[0].position}           {app.cur_time}, {app.events[0].time}')
+        # print(f'{app.atoms[0].velocity}, {app.atoms[0].position}           {app.cur_time}, {app.events[0].time}')
         # Screen
         screen.fill(BLACK)
         # Sprites
