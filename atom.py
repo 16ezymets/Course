@@ -4,7 +4,6 @@ from event import Event
 from settings import *
 
 
-
 class Atom:
     r: int = ATOM_R   # радиус атома
     m: float = ATOM_M   # масса атома
@@ -15,19 +14,19 @@ class Atom:
         self.color = color
         self.mass = self.m
 
-    def move(self, t: float):
-        self.position += self.velocity * float(t)
+    def move(self, timestep):
+        self.position += self.velocity * timestep
 
     def collide(self, other, cur_time):
-        #assert(self.r > 0)
-        #if not isinstance(other, Atom):
+        # assert(self.r > 0)
+        # if not isinstance(other, Atom):
         #    return NotImplemented
         x = other.position.x - self.position.x
         y = other.position.y - self.position.y
         vx = other.velocity.x - self.velocity.x
         vy = other.velocity.y - self.velocity.y
         #  ранняя отсечка
-        #if x*vx > 0 or y * vy > 0:
+        # if x*vx > 0 or y * vy > 0:
         #    return None
         a = vx ** 2 + vy ** 2
         b = 2 * (x * vx + y * vy)
@@ -40,7 +39,7 @@ class Atom:
         _t2 = (-b + d_sqrt) / (2 * a)
         t1 = round(_t1, 10)
         t2 = round(_t2, 10)
-        #assert(t1 * t2 > 0)
+        # assert(t1 * t2 > 0)
         if t1 * t2 > 0:
             t = min(t1, t2)
         else:
