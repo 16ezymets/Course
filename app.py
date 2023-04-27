@@ -130,7 +130,7 @@ class App:
         events.sort(key=lambda el: el.time)
         return events
 
-    def calc_collisions(self, a):
+    def calc_collisions(self, a) -> list:
         # Подсчет столновений атома с другими атомами и сортировка по времени
         events: list[Event] = []
         if isinstance(a, Atom):

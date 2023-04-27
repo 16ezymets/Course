@@ -13,7 +13,7 @@ class Atom:
         self.position = position
         self.velocity = velocity
         self.color = color
-        self.mass = 1
+        self.mass = self.m
 
     def move(self, t: float):
         self.position += self.velocity * float(t)
