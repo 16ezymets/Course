@@ -36,7 +36,7 @@ class Vector2d:
         return f"({self.x}, {self.y})"
 
     def dist_2(self, other):
-        return (other.x-self.x)**2 +(other.y-self.y)**2
+        return (other.x-self.x)**2 + (other.y-self.y)**2
 
     def dist_2_xy(self, x, y):
         return (x-self.x)**2 + (y-self.y)**2
