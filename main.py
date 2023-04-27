@@ -55,7 +55,7 @@ def fill_info(app, font, screen, width):
     stat = app.hot_stat()
     # ввод скорости стенки
     for i in range(len(stat)):
-        text1 = font.render(stat[i], True, STAT_COLOR)
+        text1 = font.render(stat[i], True, STAT_TEXT_COLOR)
         screen.blit(text1, (width + 7, pix))
         pix += 40
 
