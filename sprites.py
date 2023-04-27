@@ -30,9 +30,6 @@ class BorderSprite(pygame.sprite.Sprite):
         self.rect.center = (-ATOM_R, HEIGHT // 2)
 
     def update(self):
-        self.rect.center = (self.b.position.x - 2*ATOM_R, HEIGHT // 2)
-
-    def update(self):
         self.image = pygame.Surface((self.b.position.x, HEIGHT + ATOM_R))
         self.rect.center = (0, HEIGHT // 2)
         self.image.fill(GRAY)
