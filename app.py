@@ -12,6 +12,8 @@ class App:
         self.cur_time = 0
         self.atoms = App.create_atoms()
         self.events = self.calc_all_collisions()
+        # statistics
+        self.move_count = 0
         self.impulse_diff = [[0, 0, 0, 0] for _ in range(STAT_MOVE_COUNT)]
 
     @staticmethod
@@ -69,10 +71,13 @@ class App:
                 self.cleanup(e.obj1)
                 self.cleanup(e.obj2)
                 events1 = self.calc_collisions(e.obj1)
+                if len(events1) < 2:
+                    events1 = self.calc_collisions(e.obj1)
                 events2 = self.calc_collisions(e.obj2)
                 add = sorted_merge(events1, events2)
+                assert(len(add) > 0)
                 self.events = sorted_merge(self.events, add)
-                assert (len(self.events) > 0)
+                assert(len(self.events) > 0)
                 e = self.events[0]
         self.impulse_diff.pop(0)
         self.impulse_diff.append([impulse_diff[0] / timestep, impulse_diff[1] / timestep, impulse_diff[2] / timestep, impulse_diff[3] / timestep])
@@ -80,7 +85,7 @@ class App:
     def move(self, timestep):
         for a in self.atoms:
             a.move(timestep)
-        self.box.move_borders(timestep)
+        self.box.move(timestep)
 
     def hot_stat(self):
         e = 0
@@ -98,6 +103,10 @@ class App:
         right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
         top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
         bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
+        p = sum((left_pressure, right_pressure, top_pressure, bottom_pressure)) / 4
+        v = self.box.volume()
+        t = e
+        pvt = p * v / t
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
                 f"X-impulse: {px}",
@@ -106,7 +115,8 @@ class App:
                 f"Left Pressure: {left_pressure}",
                 f"Right Pressure: {right_pressure}",
                 f"Top Pressure: {top_pressure}",
-                f"Bottom Pressure: {bottom_pressure}"]
+                f"Bottom Pressure: {bottom_pressure}",
+                f"PV/T: {pvt}", ]
 
     def calc_all_collisions(self):
         # Подсчет всех будущих столкновений атомов и сортировка по времени

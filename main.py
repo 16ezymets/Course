@@ -23,7 +23,7 @@ def main():
     all_sprites.update()
 
     # выделить в объект
-    fps = 60
+    fps = 30
     timestep = 1 / fps
     clock = pygame.time.Clock()
 

@@ -12,17 +12,18 @@ BLUE = (100, 100, 255)
 #  параметры газа
 ATOM_M = 10**(-24)
 
-#Atom.r = 0.4
+#ATOM_R = 0.4
 #ATOM_COUNT = 1000
-
-#Atom.r = 5
+#ATOM_R = 5
 #ATOM_COUNT = 300
+ATOM_R = 16
+ATOM_COUNT = 30
 
 ATOM_R = 16
-ATOM_COUNT = 1
+ATOM_COUNT = 30
 
-BOX_SPEED = 20
-MAX_SPEED = 500
+BOX_SPEED = 50
+MAX_SPEED = 300
 RED_PART = 20
 
 #  параметры бокса (экрана)
