@@ -12,10 +12,12 @@ STAT_TEXT_COLOR = (150, 255, 150)
 #  параметры газа
 ATOM_M = 10**(-24)
 
-#ATOM_R = 0.4
-#ATOM_COUNT = 1000
-#ATOM_R = 5
-#ATOM_COUNT = 300
+# ATOM_R = 0.4
+# ATOM_COUNT = 1000
+
+# ATOM_R = 5
+# ATOM_COUNT = 300
+
 ATOM_R = 16
 ATOM_COUNT = 30
 
