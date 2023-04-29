@@ -10,7 +10,7 @@ class Box:
         # Параметры ящика
         self.size = size
         self.borders = [
-            Border(Vector2d(0, None), Vector2d(BOX_SPEED, 0)),       # левый
+            Border(Vector2d(0, None), Vector2d(0, 0)),       # левый
             Border(Vector2d(size.x, None), Vector2d(0, 0)),   # правый
             Border(Vector2d(None, 0), Vector2d(0, 0)),        # верхний
             Border(Vector2d(None, size.y), Vector2d(0, 0)),   # нижний
