@@ -10,7 +10,7 @@ class Box:
         # Параметры ящика
         self.size = size
         self.borders = [
-            Border(Vector2d(0, None), Vector2d(0, 0)),       # левый
+            Border(Vector2d(0, None), Vector2d(BOX_SPEED, 0)),       # левый
             Border(Vector2d(size.x, None), Vector2d(0, 0)),   # правый
             Border(Vector2d(None, 0), Vector2d(0, 0)),        # верхний
             Border(Vector2d(None, size.y), Vector2d(0, 0)),   # нижний
@@ -71,7 +71,7 @@ class Border:
             v = Vector2d(-a.velocity.x + 2 * self.velocity.x, a.velocity.y)
         else:                            # по вертикали
             assert(self.position.y is not None)
-            dist = a.position.y - self.position.y if self.position.y else a.position.y - ATOM_R  # чтобы атом не залезал на title
+            dist = a.position.y - self.position.y if self.position.y else a.position.y - ATOM_R
             speed = a.velocity.y - self.velocity.y
             v = Vector2d(a.velocity.x, -a.velocity.y + 2 * self.velocity.y)
 
