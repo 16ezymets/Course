@@ -80,7 +80,7 @@ class App:
     def move(self, timestep):
         for a in self.atoms:
             a.move(timestep)
-        self.box.move_borders(timestep)
+        self.box.move(timestep)
 
     def hot_stat(self):
         e = 0
@@ -137,4 +137,3 @@ class App:
         # Очистка всех событий, связанных с определенным атомом
         if isinstance(obj, Atom):
             self.events = [e for e in self.events if e.obj1 != obj and e.obj2 != obj]
-

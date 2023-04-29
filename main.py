@@ -22,7 +22,7 @@ def main():
     all_sprites.update()
 
     # выделить в объект
-    fps = 30
+    fps = 60
     timestep = 1 / fps
     clock = pygame.time.Clock()
 
@@ -36,6 +36,12 @@ def main():
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
                 return
+            elif ev.type == pygame.KEYDOWN:
+                if ev.key == pygame.K_LEFT:
+                    for b in app.box.borders:
+                        b.velocity.x, b.velocity.y = 0, 0
+                elif ev.key == pygame.K_RIGHT:
+                    app.box.borders[0].velocity.x = BOX_SPEED
         # print(app.box.borders[0].position)
         app.step(timestep)
         # print(f'{app.atoms[0].velocity}, {app.atoms[0].position}           {app.cur_time}, {app.events[0].time}')
