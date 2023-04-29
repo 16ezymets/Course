@@ -71,7 +71,10 @@ class Border:
             v = Vector2d(-a.velocity.x + 2 * self.velocity.x, a.velocity.y)
         else:                            # по вертикали
             assert(self.position.y is not None)
-            dist = a.position.y - self.position.y
+            if not self.position.y:
+                dist = a.position.y - ATOM_R
+            else:
+                dist = a.position.y - self.position.y
             speed = a.velocity.y - self.velocity.y
             v = Vector2d(a.velocity.x, -a.velocity.y + 2 * self.velocity.y)
 
