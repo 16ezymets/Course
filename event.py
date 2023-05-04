@@ -7,3 +7,6 @@ class Event:
         self.time = collision_time
         self.newv1 = v1
         self.newv2 = v2
+
+    def __repr__(self):
+        return f"{self.obj1} : {self.time} --> {self.newv1}"

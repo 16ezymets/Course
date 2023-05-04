@@ -14,6 +14,9 @@ class Atom:
         self.color = color
         self.mass = self.m
 
+    def __repr__(a):
+        return f"{a.position=}, {a.velocity=}"
+
     def move(self, timestep):
         self.position += self.velocity * timestep
 

@@ -18,7 +18,7 @@ def main():
     # Sprites creating
     stats_screen = StatScreen(width, 0, STAT_WIDTH, height)
     all_sprites = pygame.sprite.Group()
-    all_sprites.add([Sprite(a) for a in app.atoms], BorderSprite(app.box.borders[0]), stats_screen)
+    all_sprites.add(BorderSprite(app.box.borders[0]), stats_screen, [Sprite(a) for a in app.atoms])
     all_sprites.update()
 
     # выделить в объект

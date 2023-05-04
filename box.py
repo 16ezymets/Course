@@ -25,27 +25,35 @@ class Box:
     def volume(self):
         return self.space_width() * self.space_height()
 
+    def center(self):
+        return Vector2d((self.borders[0].position.x + self.borders[1].position.x) / 2,
+                        (self.borders[2].position.y + self.borders[3].position.y) / 2)
+
     def collide(self, a: Atom, cur_time: float) -> list:
+        center = self.center()
         # найдем все 4 столкновения (возможно, с Null-ами)
-        ev = [b.collide(a, cur_time) for b in self.borders]
-        # добавим в список лучшее из них по горизонтали и вертикали
-        events = []
-        Box.add_best(events, ev[0], ev[1], cur_time)
-        Box.add_best(events, ev[2], ev[3], cur_time)
+        ev = [b.collide(a, cur_time, center) for b in self.borders]
+        # добавим в список только корректные события (по одному по горизонтали и вертикали)
+        events = [e for e in ev if e]
+        # Box.add_one(events, ev[0], ev[1], cur_time)
+        # Box.add_one(events, ev[2], ev[3], cur_time)
         return events
 
-    @staticmethod
-    def add_best(events: list[Event], e1: Event, e2: Event, cur_time):
+    '''@staticmethod
+    def add_one(events: list[Event], e1: Event, e2: Event, cur_time):
         if e1 and e2:
-            events.append(e1 if (e1.time > e2.time) else e2)
+            #events.append(e1 if (e1.time > e2.time) else e2)
+            events.append(e1)
+            events.append(e2)
         elif e1:
             events.append(e1)
         elif e2:
             events.append(e2)
         else:
-            assert (not e1.obj1.velocity.x) or (not e2.obj1.velocity.y)  # if atom speed is 0, nothing appends
+            return
         if events[-1].time < cur_time:
-            events[-1].time = cur_time
+            events[-1].time = cur_time      # этого достаточно, чтобы событие отработало на следующем шаге
+    '''
 
     def move(self, timestep):
         for b in self.borders:
@@ -63,13 +71,19 @@ class Border:
         if self.position.y is not None:
             self.position.y += self.velocity.y * timestep
 
-    def collide(self, a: Atom, cur_time: float) -> Event:
+    def collide(self, a: Atom, cur_time: float, center: Vector2d) -> Event:
         assert((self.position.x is None) or (self.position.y is None))
-        if self.position.x is not None:  # по горизонтали
+        if self.position.y is None:     # вертикальная стенка
+            assert (self.position.x is not None)
+            #if a.velocity.x < self.velocity.x and 0 < self.velocity.x and a.position.x < self.position.x:
+            #    print(a)
             dist = a.position.x - self.position.x
             speed = a.velocity.x - self.velocity.x
             v = Vector2d(-a.velocity.x + 2 * self.velocity.x, a.velocity.y)
-        else:                            # по вертикали
+            #  если атом движется (относительно стенки) не от центра, то это "неправильное" столкновение
+            if speed * (self.position.x - center.x) < 0:
+                speed = 0
+        else:                           # горизонтальная стенка
             assert(self.position.y is not None)
             if not self.position.y:
                 dist = a.position.y - ATOM_R
@@ -77,6 +91,9 @@ class Border:
                 dist = a.position.y - self.position.y
             speed = a.velocity.y - self.velocity.y
             v = Vector2d(a.velocity.x, -a.velocity.y + 2 * self.velocity.y)
+            #  если атом движется (относительно стенки) не от центра, то это "неправильное" столкновение
+            if speed * (self.position.y - center.y) < 0:
+                speed = 0
 
         if speed != 0:
             time = - dist / speed

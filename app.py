@@ -137,3 +137,4 @@ class App:
         # Очистка всех событий, связанных с определенным атомом
         if isinstance(obj, Atom):
             self.events = [e for e in self.events if e.obj1 != obj and e.obj2 != obj]
+
