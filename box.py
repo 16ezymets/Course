@@ -35,25 +35,7 @@ class Box:
         ev = [b.collide(a, cur_time, center) for b in self.borders]
         # добавим в список только корректные события (по одному по горизонтали и вертикали)
         events = [e for e in ev if e]
-        # Box.add_one(events, ev[0], ev[1], cur_time)
-        # Box.add_one(events, ev[2], ev[3], cur_time)
         return events
-
-    '''@staticmethod
-    def add_one(events: list[Event], e1: Event, e2: Event, cur_time):
-        if e1 and e2:
-            #events.append(e1 if (e1.time > e2.time) else e2)
-            events.append(e1)
-            events.append(e2)
-        elif e1:
-            events.append(e1)
-        elif e2:
-            events.append(e2)
-        else:
-            return
-        if events[-1].time < cur_time:
-            events[-1].time = cur_time      # этого достаточно, чтобы событие отработало на следующем шаге
-    '''
 
     def move(self, timestep):
         for b in self.borders:
@@ -75,8 +57,6 @@ class Border:
         assert((self.position.x is None) or (self.position.y is None))
         if self.position.y is None:     # вертикальная стенка
             assert (self.position.x is not None)
-            #if a.velocity.x < self.velocity.x and 0 < self.velocity.x and a.position.x < self.position.x:
-            #    print(a)
             dist = a.position.x - self.position.x
             speed = a.velocity.x - self.velocity.x
             v = Vector2d(-a.velocity.x + 2 * self.velocity.x, a.velocity.y)

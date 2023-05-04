@@ -37,7 +37,6 @@ def main():
             if ev.type == pygame.QUIT:
                 return
         app.step(timestep)
-        # print(f'{app.atoms[0].velocity}, {app.atoms[0].position}           {app.cur_time}, {app.events[0].time}')
         # Screen
         screen.fill(BLACK)
         # Sprites
@@ -49,14 +48,17 @@ def main():
         clock.tick(fps)
 
 
+LINE_HEIGHT = 40
+LEFT_OFFSET = 7
+
 def fill_info(app, font, screen, width):
     pix = 0
     stat = app.hot_stat()
     # ввод скорости стенки
     for i in range(len(stat)):
         text1 = font.render(stat[i], True, STAT_TEXT_COLOR)
-        screen.blit(text1, (width + 7, pix))
-        pix += 40
+        screen.blit(text1, (width + LEFT_OFFSET, pix))
+        pix += LINE_HEIGHT
 
 
 if __name__ == "__main__":
