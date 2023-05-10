@@ -51,6 +51,7 @@ def main():
 LINE_HEIGHT = 40
 LEFT_OFFSET = 7
 
+
 def fill_info(app, font, screen, width):
     pix = 0
     stat = app.hot_stat()

@@ -86,11 +86,17 @@ class App:
         e = 0
         px = 0
         py = 0
-        for a in self.atoms:
-            e += a.velocity.x**2 + a.velocity.y**2
-            px += a.velocity.x
-            py += a.velocity.y
+        n = 0  # mol
+        for atom in self.atoms:
+            e += atom.velocity.x**2 + atom.velocity.y**2
+            px += atom.velocity.x
+            py += atom.velocity.y
+            n += atom.mass
         e = round(e / len(self.atoms) / 2, 2)
+        t = e
+        s = self.box.borders[0].position.x  # пройденное расстояние
+        f = ...  # сила, действующая на поршень
+        # a = f * s
         px = round(px, 2)
         py = round(py, 2)
         cnt = len(self.events)
@@ -98,8 +104,10 @@ class App:
         right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
         top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
         bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
+        ie = 1.5 * n * R * t  # внутренняя энергия
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
+                f"Internal energy: {ie}",
                 f"X-impulse: {px}",
                 f"Y-impulse: {py}",
                 f"Events_count: {cnt}",
