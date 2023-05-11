@@ -95,8 +95,6 @@ class App:
         e = round(e / len(self.atoms) / 2, 2)
         t = e
         s = self.box.borders[0].position.x  # пройденное расстояние
-        f = ...  # сила, действующая на поршень
-        # a = f * s
         px = round(px, 2)
         py = round(py, 2)
         cnt = len(self.events)
@@ -104,10 +102,12 @@ class App:
         right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
         top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
         bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
+        a = left_pressure * s
         ie = 1.5 * n * R * t  # внутренняя энергия
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
                 f"Internal energy: {ie}",
+                f"Piston work: {a}",
                 f"X-impulse: {px}",
                 f"Y-impulse: {py}",
                 f"Events_count: {cnt}",
