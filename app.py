@@ -106,7 +106,7 @@ class App:
         # p v = nu r t
         # t = p * v / (n * K)
         t = (p * self.box.volume()) / (n * K)
-        ie = 1.5 * n * R * t  # внутренняя энергия
+        ie = n * R * t  # внутренняя энергия
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
                 f"Internal energy: {ie}",
