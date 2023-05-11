@@ -102,14 +102,15 @@ class App:
         top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
         bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
         a += left_pressure * s
-        p = left_pressure
+        p1 = left_pressure
         # p v = nu r t
         # t = p * v / (n * K)
-        t = (p * self.box.volume()) / (n * K)
-        ie = n * R * t  # внутренняя энергия
+        t = (p1 * self.box.volume()) / (n * K)
+        p2 = n * t * K
+        ie = K * t  # средняя энергия молекул
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
-                f"Internal energy: {ie}",
+                f"E(k): {ie}",
                 f"Temperature: {t}",
                 f"Piston work: {a}",
                 f"X-impulse: {px}",
@@ -118,7 +119,8 @@ class App:
                 f"Left Pressure: {left_pressure}",
                 f"Right Pressure: {right_pressure}",
                 f"Top Pressure: {top_pressure}",
-                f"Bottom Pressure: {bottom_pressure}"]
+                f"Bottom Pressure: {bottom_pressure}",
+                f"{p2=}"]
 
     def calc_all_collisions(self):
         # Подсчет всех будущих столкновений атомов и сортировка по времени
