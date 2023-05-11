@@ -86,27 +86,29 @@ class App:
         e = 0
         px = 0
         py = 0
-        n = 0  # mol
         for atom in self.atoms:
             e += atom.velocity.x**2 + atom.velocity.y**2
             px += atom.velocity.x
             py += atom.velocity.y
-            n += atom.mass
         e = round(e / len(self.atoms) / 2, 2)
-        t = e
         s = self.box.borders[0].position.x  # пройденное расстояние
         px = round(px, 2)
         py = round(py, 2)
+        n = len(self.atoms)  # Hydrogen (mol)
+        v = (WIDTH + ATOM_R) * (HEIGHT + ATOM_R)
         cnt = len(self.events)
         left_pressure = sum(diff[0] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
         right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
         top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
         bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
         a = left_pressure * s
+        p = left_pressure
+        t = (p * v) / (n * R) / K
         ie = 1.5 * n * R * t  # внутренняя энергия
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
                 f"Internal energy: {ie}",
+                f"Temperature: {t}",
                 f"Piston work: {a}",
                 f"X-impulse: {px}",
                 f"Y-impulse: {py}",
