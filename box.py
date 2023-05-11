@@ -17,13 +17,13 @@ class Box:
         ]
 
     def space_width(self):
-        return self.borders[1].position.x - self.borders[0].position.x
+        return (self.borders[1].position.x - self.borders[0].position.x) * SCALE
 
     def space_height(self):
-        return self.borders[3].position.y - self.borders[2].position.y
+        return (self.borders[3].position.y - self.borders[2].position.y) * SCALE
 
     def volume(self):
-        return self.space_width() * self.space_height()
+        return self.space_width() * self.space_height() * DEPTH
 
     def center(self):
         return Vector2d((self.borders[0].position.x + self.borders[1].position.x) / 2,

@@ -56,13 +56,13 @@ class App:
             else:
                 self.move(e.time - self.cur_time)
                 if e.obj2 == self.box.borders[0]:
-                    impulse_diff[0] += (e.newv1.x - e.obj1.velocity.x) * e.obj1.m
+                    impulse_diff[0] += (e.newv1.x - e.obj1.velocity.x) * e.obj1.m * SCALE
                 if e.obj2 == self.box.borders[1]:
-                    impulse_diff[1] += (e.obj1.velocity.x - e.newv1.x) * e.obj1.m
+                    impulse_diff[1] += (e.obj1.velocity.x - e.newv1.x) * e.obj1.m * SCALE
                 if e.obj2 == self.box.borders[2]:
-                    impulse_diff[2] += (e.newv1.y - e.obj1.velocity.y) * e.obj1.m
+                    impulse_diff[2] += (e.newv1.y - e.obj1.velocity.y) * e.obj1.m * SCALE
                 if e.obj2 == self.box.borders[3]:
-                    impulse_diff[3] += (e.obj1.velocity.y - e.newv1.y) * e.obj1.m
+                    impulse_diff[3] += (e.obj1.velocity.y - e.newv1.y) * e.obj1.m * SCALE
                 e.obj1.velocity = e.newv1
                 e.obj2.velocity = e.newv2
                 self.cur_time = e.time
@@ -97,10 +97,10 @@ class App:
         py = round(py, 2)
         n = len(self.atoms)
         cnt = len(self.events)
-        left_pressure = sum(diff[0] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
-        right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
-        top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
-        bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
+        left_pressure = sum(diff[0] for diff in self.impulse_diff) / (self.box.space_height() * DEPTH)
+        right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * DEPTH)
+        top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
+        bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
         a += left_pressure * s
         p1 = left_pressure
         # p v = nu r t
@@ -111,16 +111,16 @@ class App:
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
                 f"E(k): {ie}",
-                f"Temperature: {t}",
+                f"Temperature (K): {t}",
                 f"Piston work: {a}",
                 f"X-impulse: {px}",
                 f"Y-impulse: {py}",
                 f"Events_count: {cnt}",
-                f"Left Pressure: {left_pressure}",
-                f"Right Pressure: {right_pressure}",
-                f"Top Pressure: {top_pressure}",
-                f"Bottom Pressure: {bottom_pressure}",
-                f"{p2=}"]
+                f"MKT pressure: {p2}",
+                f"Left pressure: {left_pressure}",
+                f"Right pressure: {right_pressure}",
+                f"Top pressure: {top_pressure}",
+                f"Bottom pressure: {bottom_pressure}"]
 
     def calc_all_collisions(self):
         # Подсчет всех будущих столкновений атомов и сортировка по времени
