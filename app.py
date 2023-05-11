@@ -84,6 +84,7 @@ class App:
 
     def hot_stat(self):
         e = 0
+        a = 0
         px = 0
         py = 0
         for atom in self.atoms:
@@ -94,16 +95,17 @@ class App:
         s = self.box.borders[0].position.x  # пройденное расстояние
         px = round(px, 2)
         py = round(py, 2)
-        n = len(self.atoms)  # Hydrogen (mol)
-        v = (WIDTH + ATOM_R) * (HEIGHT + ATOM_R)
+        n = len(self.atoms)
         cnt = len(self.events)
         left_pressure = sum(diff[0] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
         right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * SCALE * DEPTH)
         top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
         bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * SCALE * DEPTH)
-        a = left_pressure * s
+        a += left_pressure * s
         p = left_pressure
-        t = (p * v) / (n * R) / K
+        # p v = nu r t
+        # t = p * v / (n * K)
+        t = (p * self.box.volume()) / (n * K)
         ie = 1.5 * n * R * t  # внутренняя энергия
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
