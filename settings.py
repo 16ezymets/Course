@@ -30,12 +30,11 @@ ATOM_R = 16
 ATOM_COUNT = 30
 
 BOX_SPEED = 50
-MAX_SPEED = 2 * H_SPEED / SCALE
+MAX_SPEED = 2 * H_SPEED // SCALE
 RED_PART = 20
 
 STAT_MOVE_COUNT = 300
 # чем больше STAT_MOVE_COUNT, тем точнее вычесление давления
 
-H_SPEED = 1760  # m/s
 R = 8.314_462  # универсальная газовая постоянная
 K = 1.380_649 * 10**-23   # постоянная Больцмана

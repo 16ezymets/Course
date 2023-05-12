@@ -92,7 +92,7 @@ class App:
             px += atom.velocity.x
             py += atom.velocity.y
         e = round(e / len(self.atoms) / 2, 2)
-        s = self.box.borders[0].position.x  # пройденное расстояние
+        s = self.box.borders[0].position.x * SCALE  # пройденное расстояние
         px = round(px, 2)
         py = round(py, 2)
         n = len(self.atoms)
