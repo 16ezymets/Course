@@ -35,7 +35,8 @@ def main():
         # Window closing
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
-                return
+                running = False
+                break
         app.step(timestep)
         # Screen
         screen.fill(BLACK)
