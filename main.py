@@ -36,7 +36,7 @@ def main():
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
                 return
-        app.step(timestep)
+        running = app.step(timestep)
         # Screen
         screen.fill(BLACK)
         # Sprites

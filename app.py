@@ -39,7 +39,7 @@ class App:
             atoms.append(atom)
         return atoms
 
-    def step(self, timestep: float):
+    def step(self, timestep: float) -> bool:
         # рассчет кадра через timestep
         assert(len(self.events) > 0)
         e: Event = self.events[0]
@@ -76,6 +76,7 @@ class App:
                 e = self.events[0]
         self.impulse_diff.pop(0)
         self.impulse_diff.append([impulse_diff[0] / timestep, impulse_diff[1] / timestep, impulse_diff[2] / timestep, impulse_diff[3] / timestep])
+        return True if self.box.volume() > END_VOLUME else False
 
     def move(self, timestep):
         for a in self.atoms:

@@ -15,6 +15,7 @@ WIDTH = 1200
 HEIGHT = 800
 SCALE = 1   # 1 m per point
 DEPTH = 1       # in meters
+END_VOLUME = 800 * 100
 
 #  параметры газа
 ATOM_M = 10**(-24)
