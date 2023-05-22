@@ -13,6 +13,10 @@ class App:
         self.atoms = App.create_atoms()
         self.events = self.calc_all_collisions()
         self.impulse_diff = [[0, 0, 0, 0] for _ in range(STAT_MOVE_COUNT)]
+        self.time = []
+        self.press = []
+        self.volume = []
+        self.temperature = []
 
     @staticmethod
     def create_atoms() -> list[Atom]:
@@ -102,6 +106,7 @@ class App:
         right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * DEPTH)
         top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
         bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
+        all_pressures = [left_pressure, right_pressure, top_pressure, bottom_pressure]
         a += left_pressure * s
         p1 = left_pressure
         # p v = nu r t
@@ -109,6 +114,11 @@ class App:
         t = (p1 * self.box.volume()) / (n * K)
         p2 = n * t * K
         ie = K * t  # средняя энергия молекул
+        # stat
+        self.time.append(self.cur_time)
+        self.press.append(sum(all_pressures) / 4)
+        self.volume.append(self.box.volume())
+        self.temperature.append(t)
         return [f"Moves for step: {self.move_count:02}",
                 f"Total energy: {e}",
                 f"E(k): {ie}",

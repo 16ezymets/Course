@@ -37,15 +37,16 @@ def main():
             if ev.type == pygame.QUIT:
                 return
         running = app.step(timestep)
-        # Screen
-        screen.fill(BLACK)
-        # Sprites
-        all_sprites.update()
-        all_sprites.draw(screen)
-        fill_info(app, font, screen, width)
-        # Screen updating
-        pygame.display.flip()
-        clock.tick(fps)
+        if ANIMATION:
+            # Screen
+            screen.fill(BLACK)
+            # Sprites
+            all_sprites.update()
+            all_sprites.draw(screen)
+            fill_info(app, font, screen, width)
+            # Screen updating
+            pygame.display.flip()
+            clock.tick(fps)
 
 
 LINE_HEIGHT = 40
