@@ -111,8 +111,8 @@ class App:
         p1 = left_pressure
         # p v = nu r t
         # t = p * v / (n * K)
-        t = (p1 * self.box.volume()) / (n * K)
-        p2 = n * t * K
+        t = (p1 * self.box.volume()) / (NA * K * n)
+        p2 = (n * K * NA * t) / (self.box.volume())
         ie = K * t  # средняя энергия молекул
         # stat
         self.time.append(self.cur_time)

@@ -14,10 +14,10 @@ STAT_TEXT_COLOR = (150, 255, 150)
 #  параметры бокса (экрана)
 WIDTH = 1200
 HEIGHT = 800
-SCALE = 1   # 1 m per point
+SCALE = 1  # 1 m per point
 DEPTH = 1       # in meters
-EXTREME_WIDTH = 200
-extreme_volume = HEIGHT * EXTREME_WIDTH
+EXTREME_WIDTH = 150
+extreme_volume = HEIGHT * EXTREME_WIDTH * SCALE * SCALE * DEPTH
 
 #  параметры газа
 ATOM_M = 10**(-24)
@@ -41,3 +41,4 @@ STAT_MOVE_COUNT = 300
 
 R = 8.314_462  # универсальная газовая постоянная
 K = 1.380_649 * 10**-23   # постоянная Больцмана
+NA = 6.022_140_76 * 10**23  # число Авогардо
