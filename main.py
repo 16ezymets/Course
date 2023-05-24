@@ -1,4 +1,4 @@
-
+from excel_inf import write_to_excel
 from app import App
 from sprites import *
 from settings import *
@@ -47,6 +47,9 @@ def main():
             # Screen updating
             pygame.display.flip()
             clock.tick(fps)
+    # for i in range(len(app.time)):
+        # print(f"{app.time[i]};{app.press[i]};{app.volume};{app.temperature[i]}\n")
+    write_to_excel(app)
 
 
 LINE_HEIGHT = 40
