@@ -1,5 +1,4 @@
-from excel_inf import write_to_excel
-from app import App
+from excel_inf import *
 from sprites import *
 from settings import *
 
@@ -49,7 +48,7 @@ def main():
             clock.tick(fps)
     # for i in range(len(app.time)):
         # print(f"{app.time[i]};{app.press[i]};{app.volume};{app.temperature[i]}\n")
-    write_to_excel(app)
+    write_to_text_file(app)
 
 
 LINE_HEIGHT = 40

@@ -17,6 +17,7 @@ class App:
         self.press = []
         self.volume = []
         self.temperature = []
+        self.data = [self.time, self.press, self.volume, self.temperature]
 
     @staticmethod
     def create_atoms() -> list[Atom]:
