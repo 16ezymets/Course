@@ -115,7 +115,7 @@ class App:
         t = (p1 * self.box.volume()) / (NA * K * n)
         p2 = (n * K * NA * t) / (self.box.volume())
         ie = K * t  # средняя энергия молекул
-        de = ie * n - a
+        de = e - a
         # stat
         self.time.append(self.cur_time)
         self.press.append(sum(all_pressures) / 4)
