@@ -128,7 +128,7 @@ class App:
                 f"X-impulse: {px}",
                 f"Y-impulse: {py}",
                 f"Events_count: {cnt}",
-                f"MKT pressure: {p2}",
+                f"NKT pressure: {p2}",
                 f"Left pressure: {left_pressure}",
                 f"Right pressure: {right_pressure}",
                 f"Top pressure: {top_pressure}",
