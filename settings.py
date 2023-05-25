@@ -20,8 +20,8 @@ EXTREME_WIDTH = 150
 extreme_volume = HEIGHT * EXTREME_WIDTH * SCALE * SCALE * DEPTH
 
 #  параметры газа
-ATOM_M = 10**(-24)
-H_SPEED = 1760  # m/s
+ATOM_M = 1.7**(-24)
+H_SPEED = 2 * 10**3  # m/s
 
 ATOM_R = 0.4
 ATOM_COUNT = 1000
@@ -32,8 +32,8 @@ ATOM_COUNT = 1000
 ATOM_R = 16
 ATOM_COUNT = 30
 
-BOX_SPEED = 50
-MAX_SPEED = 2 * H_SPEED // SCALE
+BOX_SPEED = 50 // SCALE  # скорость в точках
+MAX_SPEED = 2 * H_SPEED // SCALE  # скорость в точках
 RED_PART = 20
 
 STAT_MOVE_COUNT = 300

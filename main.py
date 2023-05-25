@@ -34,15 +34,17 @@ def main():
         # Window closing
         for ev in pygame.event.get():
             if ev.type == pygame.QUIT:
-                return
-        running = app.step(timestep)
+                running = False
+                break
+        running = app.step(timestep) if running else False
         if ANIMATION:
             # Screen
             screen.fill(BLACK)
             # Sprites
             all_sprites.update()
             all_sprites.draw(screen)
-            fill_info(app, font, screen, width)
+        fill_info(app, font, screen, width)
+        if ANIMATION:
             # Screen updating
             pygame.display.flip()
             clock.tick(fps)
