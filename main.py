@@ -50,7 +50,8 @@ def main():
             clock.tick(fps)
     # for i in range(len(app.time)):
         # print(f"{app.time[i]};{app.press[i]};{app.volume};{app.temperature[i]}\n")
-    write_to_text_file(app)
+    if WRITE_DATA_TO_TEXTFILE:
+        write_to_text_file(app)
 
 
 LINE_HEIGHT = 40
