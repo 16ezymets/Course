@@ -13,16 +13,16 @@ STAT_TEXT_COLOR = (150, 255, 150)
 
 
 #  параметры бокса (экрана)
-WIDTH = 1200
-HEIGHT = 800
-SCALE = 1  # 1 m per point
+WIDTH = 1.2
+HEIGHT = 0.8
+SCALE = 1 * 10**-3  # 1 mm per point
 DEPTH = 1       # in meters
-EXTREME_WIDTH = 150
-extreme_volume = HEIGHT * EXTREME_WIDTH * SCALE * SCALE * DEPTH
+EXTREME_WIDTH = 0.15
+extreme_volume = HEIGHT * EXTREME_WIDTH * DEPTH
 
 #  параметры газа
 ATOM_M = 1.7**(-24)
-H_SPEED = 2 * 10**3  # m/s
+H_SPEED = 2  # 10**3  # m/s
 
 ATOM_R = 0.4
 ATOM_COUNT = 1000
@@ -33,8 +33,8 @@ ATOM_COUNT = 1000
 ATOM_R = 16
 ATOM_COUNT = 30
 
-BOX_SPEED = 50 // SCALE  # скорость в точках
-MAX_SPEED = 2 * H_SPEED // SCALE  # скорость в точках
+BOX_SPEED = 0.1  # скорость в м/c
+MAX_SPEED = 2 * H_SPEED  # скорость в м/c
 RED_PART = 20
 
 STAT_MOVE_COUNT = 300

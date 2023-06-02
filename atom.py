@@ -18,7 +18,8 @@ class Atom:
         return f"{a.position=}, {a.velocity=}"
 
     def move(self, timestep):
-        self.position += self.velocity * timestep
+        self.position.x += self.velocity.x * timestep
+        self.position.y += self.velocity.y * timestep
 
     def collide(self, other, cur_time):
         # assert(self.r > 0)

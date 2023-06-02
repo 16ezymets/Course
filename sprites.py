@@ -14,24 +14,24 @@ class Sprite(pygame.sprite.Sprite):
         self.image = pygame.Surface((d, d), pygame.SRCALPHA)
         pygame.draw.ellipse(self.image, a.color, [0, 0, d, d])
         self.rect = self.image.get_rect()
-        self.rect.center = (self.a.position.x, self.a.position.y)
+        self.rect.center = (self.a.position.x // SCALE, self.a.position.y // SCALE)
 
     def update(self):
-        self.rect.center = (self.a.position.x, self.a.position.y)
+        self.rect.center = (self.a.position.x // SCALE, self.a.position.y // SCALE)
 
 
 class BorderSprite(pygame.sprite.Sprite):
     def __init__(self, b: Border):
         pygame.sprite.Sprite.__init__(self)
         self.b = b
-        self.image = pygame.Surface((ATOM_R*2, HEIGHT))
+        self.image = pygame.Surface((ATOM_R*2, (HEIGHT // SCALE)))
         self.image.fill(GRAY)
         self.rect = self.image.get_rect()
-        self.rect.center = (-ATOM_R, HEIGHT // 2)
+        self.rect.center = (-ATOM_R, HEIGHT // SCALE // 2)
 
     def update(self):
-        self.image = pygame.Surface((self.b.position.x, HEIGHT + ATOM_R))
-        self.rect.center = (0, HEIGHT // 2)
+        self.image = pygame.Surface((self.b.position.x // SCALE, (HEIGHT // SCALE) + ATOM_R))
+        self.rect.center = (0, HEIGHT // SCALE // 2)
         self.image.fill(GRAY)
 
 

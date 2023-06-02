@@ -10,8 +10,8 @@ def main():
     pygame.display.set_caption(title)
 
     app = App()
-    width = app.box.size.x + ATOM_R
-    height = app.box.size.y + ATOM_R
+    width = app.box.size.x // SCALE + ATOM_R
+    height = app.box.size.y // SCALE + ATOM_R
     screen = pygame.display.set_mode((width + STAT_WIDTH, height))
 
     # Sprites creating

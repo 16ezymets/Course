@@ -32,11 +32,11 @@ class App:
             return False
 
         for _ in range(ATOM_COUNT):
-            x = random.randint(0, WIDTH - 1)
-            y = random.randint(0, HEIGHT - 1)
+            x = random.randint(0, (WIDTH // SCALE) - 1)
+            y = random.randint(0, (HEIGHT // SCALE) - 1)
             while is_bad_pos(x, y, atoms):
-                x = random.randint(0, WIDTH - 1)
-                y = random.randint(0, HEIGHT - 1)
+                x = random.randint(0, (WIDTH // SCALE) - 1)
+                y = random.randint(0, (HEIGHT // SCALE) - 1)
             vx = random.randint(-MAX_SPEED, MAX_SPEED)
             vy = random.randint(-MAX_SPEED, MAX_SPEED)
             color = RED if random.randint(0, RED_PART) == 0 else WHITE
@@ -61,13 +61,13 @@ class App:
             else:
                 self.move(e.time - self.cur_time)
                 if e.obj2 == self.box.borders[0]:
-                    impulse_diff[0] += (e.newv1.x - e.obj1.velocity.x) * e.obj1.m * SCALE
+                    impulse_diff[0] += (e.newv1.x - e.obj1.velocity.x) * e.obj1.m
                 if e.obj2 == self.box.borders[1]:
-                    impulse_diff[1] += (e.obj1.velocity.x - e.newv1.x) * e.obj1.m * SCALE
+                    impulse_diff[1] += (e.obj1.velocity.x - e.newv1.x) * e.obj1.m
                 if e.obj2 == self.box.borders[2]:
-                    impulse_diff[2] += (e.newv1.y - e.obj1.velocity.y) * e.obj1.m * SCALE
+                    impulse_diff[2] += (e.newv1.y - e.obj1.velocity.y) * e.obj1.m
                 if e.obj2 == self.box.borders[3]:
-                    impulse_diff[3] += (e.obj1.velocity.y - e.newv1.y) * e.obj1.m * SCALE
+                    impulse_diff[3] += (e.obj1.velocity.y - e.newv1.y) * e.obj1.m
                 e.obj1.velocity = e.newv1
                 e.obj2.velocity = e.newv2
                 self.cur_time = e.time
@@ -98,7 +98,7 @@ class App:
             px += atom.velocity.x
             py += atom.velocity.y
         e = round(e / len(self.atoms) / 2, 2)
-        s = self.box.borders[0].position.x * SCALE  # пройденное расстояние
+        s = self.box.borders[0].position.x  # пройденное расстояние
         px = round(px, 2)
         py = round(py, 2)
         n = len(self.atoms)
