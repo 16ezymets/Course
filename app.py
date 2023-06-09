@@ -38,8 +38,8 @@ class App:
             while is_bad_pos(x, y, self.atoms):
                 x = random.random() * self.box.space_width()
                 y = random.random() * self.box.space_height()
-            vx = random.randint(-MAX_SPEED, MAX_SPEED)
-            vy = random.randint(-MAX_SPEED, MAX_SPEED)
+            vx = (random.random()-0.5)*2*MAX_SPEED
+            vy = (random.random()-0.5)*2*MAX_SPEED
             color = RED if random.randint(0, RED_PART) == 0 else WHITE
             atom = Atom(Vector2d(x, y), Vector2d(vx, vy), color)
             self.atoms.append(atom)
@@ -103,6 +103,7 @@ class App:
             e_total += (atom.velocity.x**2 + atom.velocity.y**2)
             px += atom.velocity.x * atom.m
             py += atom.velocity.y * atom.m
+        v_avr = (e_total / n) ** 0.5
         e_total *= atom.m / 2
         if self.e_initial is None:
             self.e_initial = e_total
@@ -115,12 +116,14 @@ class App:
         right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * DEPTH)
         top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
         bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
-        all_pressures = [left_pressure, right_pressure, top_pressure, bottom_pressure]
-        p_avr = sum(all_pressures) / 4
+        p_avr = (left_pressure + right_pressure + top_pressure + bottom_pressure) / 4
+
+        #  PV/T
+        pvt = p_avr * self.box.volume() / t_kin
 
         #  работа
         ds = self.box.borders[0].velocity.x * timestep  # пройденное расстояние (за шаг)
-        da = left_pressure * ds
+        da = p_avr * ds
         self.a += da
 
         # p v = nu r t = n K T
@@ -135,7 +138,8 @@ class App:
         self.volume.append(self.box.volume())
         self.temperature.append(t)
 
-        return [f"Moves for step: {self.move_count:02}",
+        return [
+                f"V (avr): {round(v_avr)}",
                 f"E (initial): {self.e_initial:8e}",
                 f"E (total): {e_total:8e}",
                 f"E (total delta): {e_delta:8e}",
@@ -146,12 +150,14 @@ class App:
                 f"P (nkt): {p2:4e}",
                 f"P (vert): {(top_pressure + bottom_pressure) / 2:2e}",
                 f"P (horz): {(right_pressure + left_pressure) / 2:2e}",
+                f"PV/T: {pvt:8e}",
 
                 f"E (=KT): {e_termo:8e}",
                 f"Temperature (K): {t:8e}",
                 f"X-impulse: {px:8e}",
                 f"Y-impulse: {py:8e}",
                 f"Events_count: {cnt}",
+                f"Moves for step: {self.move_count:02}",
                 ]
 
     def calc_all_collisions(self):

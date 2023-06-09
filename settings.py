@@ -12,17 +12,17 @@ BLUE = (100, 100, 255)
 STAT_TEXT_COLOR = (150, 255, 150)
 
 
-#  параметры бокса (экрана)
+#  параметры бокса (в СИ)
 WIDTH = 1.2
 HEIGHT = 0.8
-DEPTH = 1       # in meters
+DEPTH = 1
 EXTREME_WIDTH = 0.15
 extreme_volume = HEIGHT * EXTREME_WIDTH * DEPTH
 
 SCALE = 10**-3      # 1 mm per point
 TIME_SCALE = 5000   # замедление
 
-#  параметры газа (СИ)
+#  параметры газа (в СИ)
 #ATOM_M = 1.7**(-24)
 ATOM_M = 1.7 * 10**(-27)
 H_SPEED = 2000
@@ -36,7 +36,7 @@ ATOM_COUNT = 1000
 ATOM_R = 16
 ATOM_COUNT = 30
 
-BOX_SPEED = 1  # скорость в м/c
+BOX_SPEED = 100  # скорость в м/c
 MAX_SPEED = H_SPEED  # скорость в м/c
 RED_PART = 20
 
