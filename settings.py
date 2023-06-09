@@ -20,7 +20,7 @@ EXTREME_WIDTH = 0.15
 extreme_volume = HEIGHT * EXTREME_WIDTH * DEPTH
 
 SCALE = 10**-3      # 1 mm per point
-TIME_SCALE = 5000   # замедление
+TIME_SCALE = 8000   # замедление
 
 #  параметры газа (в СИ)
 #ATOM_M = 1.7**(-24)
@@ -35,6 +35,9 @@ ATOM_COUNT = 1000
 
 ATOM_R = 16
 ATOM_COUNT = 30
+
+ATOM_R = 8
+ATOM_COUNT = 100
 
 BOX_SPEED = 100  # скорость в м/c
 MAX_SPEED = H_SPEED  # скорость в м/c

@@ -140,12 +140,16 @@ class App:
 
         return [
                 f"V (avr): {round(v_avr)}",
+                f"X-impulse: {px:8e}",
+                f"Y-impulse: {py:8e}",
+                "",
                 f"E (initial): {self.e_initial:8e}",
                 f"E (total): {e_total:8e}",
                 f"E (total delta): {e_delta:8e}",
                 f"A (piston work): {self.a:8e}",
                 f"E (avr): {e_avr:8e}",
                 f"T (kinetic): {t_kin:8f}",
+                "",
                 f"P (avr): {p_avr:4e}",
                 f"P (nkt): {p2:4e}",
                 f"P (vert): {(top_pressure + bottom_pressure) / 2:2e}",
@@ -154,8 +158,6 @@ class App:
 
                 f"E (=KT): {e_termo:8e}",
                 f"Temperature (K): {t:8e}",
-                f"X-impulse: {px:8e}",
-                f"Y-impulse: {py:8e}",
                 f"Events_count: {cnt}",
                 f"Moves for step: {self.move_count:02}",
                 ]
