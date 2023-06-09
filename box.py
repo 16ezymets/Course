@@ -54,9 +54,9 @@ class Border:
             self.position.y += self.velocity.y * timestep
 
     def collide(self, a: Atom, cur_time: float, center: Vector2d) -> Event:
-        assert((self.position.x is None) or (self.position.y is None))
+        assert (self.position.x is None) or (self.position.y is None)
         if self.position.y is None:     # вертикальная стенка
-            assert (self.position.x is not None)
+            assert self.position.x is not None
             dist = a.position.x - self.position.x
             speed = a.velocity.x - self.velocity.x
             v = Vector2d(-a.velocity.x + 2 * self.velocity.x, a.velocity.y)
@@ -66,7 +66,7 @@ class Border:
         else:                           # горизонтальная стенка
             assert(self.position.y is not None)
             if not self.position.y:
-                dist = a.position.y - ATOM_R
+                dist = a.position.y - a.r
             else:
                 dist = a.position.y - self.position.y
             speed = a.velocity.y - self.velocity.y

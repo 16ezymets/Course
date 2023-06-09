@@ -10,7 +10,8 @@ class App:
         self.box = Box(Vector2d(WIDTH, HEIGHT))
         self.events: list[Event] = []
         self.cur_time = 0
-        self.atoms = App.create_atoms()
+        self.atoms: list[Atom] = []
+        self.create_atoms()
         self.events = self.calc_all_collisions()
         self.impulse_diff = [[0, 0, 0, 0] for _ in range(STAT_MOVE_COUNT)]
         self.time = []
@@ -18,35 +19,34 @@ class App:
         self.volume = []
         self.temperature = []
         self.data = [self.time, self.press, self.volume, self.temperature]
+        self.e_initial = None
+        self.a = 0
 
-    @staticmethod
-    def create_atoms() -> list[Atom]:
+    def create_atoms(self):
         d2 = (2*Atom.r)**2
-        atoms = []
 
         def is_bad_pos(_x: int, _y: int, _atoms: list[Atom]) -> bool:
-            #  проверка наложения точки (x, y) с каким-то из уже имеющихся атомов
+            #  проверка наложения атома в позиции (x, y) с каким-то из уже имеющихся атомов
             for a in _atoms:
                 if a.position.dist_2_xy(_x, _y) < d2:
                     return True
             return False
 
         for _ in range(ATOM_COUNT):
-            x = random.randint(0, (WIDTH // SCALE) - 1)
-            y = random.randint(0, (HEIGHT // SCALE) - 1)
-            while is_bad_pos(x, y, atoms):
-                x = random.randint(0, (WIDTH // SCALE) - 1)
-                y = random.randint(0, (HEIGHT // SCALE) - 1)
+            x = random.random() * self.box.space_width()
+            y = random.random() * self.box.space_height()
+            while is_bad_pos(x, y, self.atoms):
+                x = random.random() * self.box.space_width()
+                y = random.random() * self.box.space_height()
             vx = random.randint(-MAX_SPEED, MAX_SPEED)
             vy = random.randint(-MAX_SPEED, MAX_SPEED)
             color = RED if random.randint(0, RED_PART) == 0 else WHITE
             atom = Atom(Vector2d(x, y), Vector2d(vx, vy), color)
-            atoms.append(atom)
-        return atoms
+            self.atoms.append(atom)
 
     def step(self, timestep: float) -> bool:
         # рассчет кадра через timestep
-        assert(len(self.events) > 0)
+        assert len(self.events) > 0
         e: Event = self.events[0]
         end_step_time = self.cur_time + timestep
         #  count of moves on timestep (for stat only)
@@ -59,15 +59,16 @@ class App:
                 self.cur_time += timestep
                 break
             else:
+                #assert e.time >= self.cur_time
                 self.move(e.time - self.cur_time)
                 if e.obj2 == self.box.borders[0]:
-                    impulse_diff[0] += (e.newv1.x - e.obj1.velocity.x) * e.obj1.m
+                    impulse_diff[0] += abs(e.newv1.x - e.obj1.velocity.x) * e.obj1.m
                 if e.obj2 == self.box.borders[1]:
-                    impulse_diff[1] += (e.obj1.velocity.x - e.newv1.x) * e.obj1.m
+                    impulse_diff[1] += abs(e.obj1.velocity.x - e.newv1.x) * e.obj1.m
                 if e.obj2 == self.box.borders[2]:
-                    impulse_diff[2] += (e.newv1.y - e.obj1.velocity.y) * e.obj1.m
+                    impulse_diff[2] += abs(e.newv1.y - e.obj1.velocity.y) * e.obj1.m
                 if e.obj2 == self.box.borders[3]:
-                    impulse_diff[3] += (e.obj1.velocity.y - e.newv1.y) * e.obj1.m
+                    impulse_diff[3] += abs(e.obj1.velocity.y - e.newv1.y) * e.obj1.m
                 e.obj1.velocity = e.newv1
                 e.obj2.velocity = e.newv2
                 self.cur_time = e.time
@@ -80,7 +81,10 @@ class App:
                 assert (len(self.events) > 0)
                 e = self.events[0]
         self.impulse_diff.pop(0)
-        self.impulse_diff.append([impulse_diff[0] / timestep, impulse_diff[1] / timestep, impulse_diff[2] / timestep, impulse_diff[3] / timestep])
+        self.impulse_diff.append([impulse_diff[0] / timestep,
+                                  impulse_diff[1] / timestep,
+                                  impulse_diff[2] / timestep,
+                                  impulse_diff[3] / timestep])
         return True if self.box.volume() > extreme_volume else False
 
     def move(self, timestep):
@@ -88,53 +92,67 @@ class App:
             a.move(timestep)
         self.box.move(timestep)
 
-    def hot_stat(self):
-        e = 0
-        a = 0
+    def hot_stat(self, timestep):
+        n = len(self.atoms)
+        cnt = len(self.events)
+
+        e_total = 0
         px = 0
         py = 0
         for atom in self.atoms:
-            e += atom.velocity.x**2 + atom.velocity.y**2
-            px += atom.velocity.x
-            py += atom.velocity.y
-        e = round(e / len(self.atoms) / 2, 2)
-        s = self.box.borders[0].position.x  # пройденное расстояние
-        px = round(px, 2)
-        py = round(py, 2)
-        n = len(self.atoms)
-        cnt = len(self.events)
+            e_total += (atom.velocity.x**2 + atom.velocity.y**2)
+            px += atom.velocity.x * atom.m
+            py += atom.velocity.y * atom.m
+        e_total *= atom.m / 2
+        if self.e_initial is None:
+            self.e_initial = e_total
+        e_delta = e_total - self.e_initial
+        e_avr = e_total / n
+        t_kin = e_avr / K
+
+        #  давление
         left_pressure = sum(diff[0] for diff in self.impulse_diff) / (self.box.space_height() * DEPTH)
         right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * DEPTH)
         top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
         bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
         all_pressures = [left_pressure, right_pressure, top_pressure, bottom_pressure]
-        a += left_pressure * s
-        p1 = left_pressure
-        # p v = nu r t
-        # t = p * v / (n * K)
-        t = (p1 * self.box.volume()) / (NA * K * n)
+        p_avr = sum(all_pressures) / 4
+
+        #  работа
+        ds = self.box.borders[0].velocity.x * timestep  # пройденное расстояние (за шаг)
+        da = left_pressure * ds
+        self.a += da
+
+        # p v = nu r t = n K T
+        # T = P * V / (n * K)
+        t = (p_avr * self.box.volume()) / (NA * K * n)
+        e_termo = K * t  # "термическая" энергия молекул
         p2 = (n * K * NA * t) / (self.box.volume())
-        ie = K * t  # средняя энергия молекул
-        de = e - a
-        # stat
+
+        # stat log
         self.time.append(self.cur_time)
-        self.press.append(sum(all_pressures) / 4)
+        self.press.append(p_avr)
         self.volume.append(self.box.volume())
         self.temperature.append(t)
+
         return [f"Moves for step: {self.move_count:02}",
-                f"Total energy: {e}",
-                f"E(k): {ie}",
-                f"Temperature (K): {t}",
-                f"Piston work: {a}",
-                f"{de}",
-                f"X-impulse: {px}",
-                f"Y-impulse: {py}",
+                f"E (initial): {self.e_initial:8e}",
+                f"E (total): {e_total:8e}",
+                f"E (total delta): {e_delta:8e}",
+                f"A (piston work): {self.a:8e}",
+                f"E (avr): {e_avr:8e}",
+                f"T (kinetic): {t_kin:8f}",
+                f"P (avr): {p_avr:4e}",
+                f"P (nkt): {p2:4e}",
+                f"P (vert): {(top_pressure + bottom_pressure) / 2:2e}",
+                f"P (horz): {(right_pressure + left_pressure) / 2:2e}",
+
+                f"E (=KT): {e_termo:8e}",
+                f"Temperature (K): {t:8e}",
+                f"X-impulse: {px:8e}",
+                f"Y-impulse: {py:8e}",
                 f"Events_count: {cnt}",
-                f"NKT pressure: {p2}",
-                f"Left pressure: {left_pressure}",
-                f"Right pressure: {right_pressure}",
-                f"Top pressure: {top_pressure}",
-                f"Bottom pressure: {bottom_pressure}"]
+                ]
 
     def calc_all_collisions(self):
         # Подсчет всех будущих столкновений атомов и сортировка по времени

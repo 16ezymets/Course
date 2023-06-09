@@ -5,7 +5,7 @@ from settings import *
 
 
 class Atom:
-    r: int = ATOM_R   # радиус атома
+    r: float = ATOM_R * SCALE   # радиус атома
     m: float = ATOM_M   # масса атома
 
     def __init__(self, position: Vector2d, velocity: Vector2d, color):

@@ -7,7 +7,7 @@ class TMatrix:
         dx = pos2.x - pos1.x
         dy = pos2.y - pos1.y
         phi = atan(dy/dx) if dx else pi/2
-        assert(isinstance(phi, float))
+        assert isinstance(phi, float)
         self.a11 = self.a22 = cos(phi)
         self.a21 = -sin(phi)
         self.a12 = sin(phi)

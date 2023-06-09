@@ -10,8 +10,8 @@ def main():
     pygame.display.set_caption(title)
 
     app = App()
-    width = app.box.size.x // SCALE + ATOM_R
-    height = app.box.size.y // SCALE + ATOM_R
+    width = app.box.size.x / SCALE + ATOM_R
+    height = app.box.size.y / SCALE + ATOM_R
     screen = pygame.display.set_mode((width + STAT_WIDTH, height))
 
     # Sprites creating
@@ -22,7 +22,7 @@ def main():
 
     # выделить в объект
     fps = 60
-    timestep = 1 / fps
+    timestep = 1 / fps / TIME_SCALE
     clock = pygame.time.Clock()
 
     font = pygame.font.SysFont('arial', 20)
@@ -43,7 +43,7 @@ def main():
             # Sprites
             all_sprites.update()
             all_sprites.draw(screen)
-        fill_info(app, font, screen, width)
+        fill_info(app, font, screen, width, timestep)
         if ANIMATION:
             # Screen updating
             pygame.display.flip()
@@ -58,9 +58,9 @@ LINE_HEIGHT = 40
 LEFT_OFFSET = 7
 
 
-def fill_info(app, font, screen, width):
+def fill_info(app, font, screen, width, timestep):
     pix = 0
-    stat = app.hot_stat()
+    stat = app.hot_stat(timestep)
     # ввод скорости стенки
     for i in range(len(stat)):
         text1 = font.render(stat[i], True, STAT_TEXT_COLOR)

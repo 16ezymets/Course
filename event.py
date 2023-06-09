@@ -9,4 +9,4 @@ class Event:
         self.newv2 = v2
 
     def __repr__(self):
-        return f"{self.obj1} : {self.time} --> {self.newv1}"
+        return f"{self.time} : {self.obj1} --> {self.newv1}"
