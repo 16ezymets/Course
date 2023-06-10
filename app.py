@@ -101,10 +101,13 @@ class App:
         py = 0
         for atom in self.atoms:
             e_total += (atom.velocity.x**2 + atom.velocity.y**2)
-            px += atom.velocity.x * atom.m
-            py += atom.velocity.y * atom.m
+            px += atom.velocity.x
+            py += atom.velocity.y
         v_avr = (e_total / n) ** 0.5
-        e_total *= atom.m / 2
+        e_total *= Atom.m / 2
+        p_avr = v_avr * Atom.m
+        px *= Atom.m
+        py *= Atom.m
         if self.e_initial is None:
             self.e_initial = e_total
         e_delta = e_total - self.e_initial
@@ -116,32 +119,33 @@ class App:
         right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * DEPTH)
         top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
         bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
-        p_avr = (left_pressure + right_pressure + top_pressure + bottom_pressure) / 4
+        P_avr = (left_pressure + right_pressure + top_pressure + bottom_pressure) / 4
 
         #  PV/T
-        pvt = p_avr * self.box.volume() / t_kin
+        pvt = P_avr * self.box.volume() / t_kin
 
         #  работа
         ds = self.box.borders[0].velocity.x * timestep  # пройденное расстояние (за шаг)
-        da = p_avr * ds
+        da = P_avr * ds
         self.a += da
 
         # p v = nu r t = n K T
         # T = P * V / (n * K)
-        t = (p_avr * self.box.volume()) / (NA * K * n)
+        t = (P_avr * self.box.volume()) / (NA * K * n)
         e_termo = K * t  # "термическая" энергия молекул
         p2 = (n * K * NA * t) / (self.box.volume())
 
         # stat log
         self.time.append(self.cur_time)
-        self.press.append(p_avr)
+        self.press.append(P_avr)
         self.volume.append(self.box.volume())
         self.temperature.append(t)
 
         return [
                 f"V (avr): {round(v_avr)}",
-                f"X-impulse: {px:8e}",
-                f"Y-impulse: {py:8e}",
+                f"p (avr): {p_avr:8e}",
+                f"px (total): {px:8e}",
+                f"py (total): {py:8e}",
                 "",
                 f"E (initial): {self.e_initial:8e}",
                 f"E (total): {e_total:8e}",
@@ -150,7 +154,7 @@ class App:
                 f"E (avr): {e_avr:8e}",
                 f"T (kinetic): {t_kin:8f}",
                 "",
-                f"P (avr): {p_avr:4e}",
+                f"P (avr): {P_avr:4e}",
                 f"P (nkt): {p2:4e}",
                 f"P (vert): {(top_pressure + bottom_pressure) / 2:2e}",
                 f"P (horz): {(right_pressure + left_pressure) / 2:2e}",

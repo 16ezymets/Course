@@ -54,7 +54,7 @@ def main():
         write_to_text_file(app)
 
 
-LINE_HEIGHT = 40
+LINE_HEIGHT = 32
 LEFT_OFFSET = 7
 
 
