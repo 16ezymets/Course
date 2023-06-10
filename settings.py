@@ -36,8 +36,8 @@ ATOM_COUNT = 1000
 ATOM_R = 16
 ATOM_COUNT = 30
 
-ATOM_R = 6
-ATOM_COUNT = 200
+ATOM_R = 8
+ATOM_COUNT = 100
 
 BOX_SPEED = 100  # скорость в м/c
 MAX_SPEED = H_SPEED  # скорость в м/c

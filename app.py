@@ -97,13 +97,15 @@ class App:
         cnt = len(self.events)
 
         e_total = 0
+        v_total = 0
         px = 0
         py = 0
         for atom in self.atoms:
-            e_total += (atom.velocity.x**2 + atom.velocity.y**2)
+            e_total += (atom.velocity.x + atom.velocity.y) ** 2
             px += atom.velocity.x
             py += atom.velocity.y
-        v_avr = (e_total / n) ** 0.5
+            v_total += (atom.velocity.x ** 2 + atom.velocity.y ** 2)
+        v_avr = (v_total / n) ** 0.5
         e_total *= Atom.m / 2
         p_avr = v_avr * Atom.m
         px *= Atom.m
