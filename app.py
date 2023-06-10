@@ -112,34 +112,40 @@ class App:
             self.e_initial = e_total
         e_delta = e_total - self.e_initial
         e_avr = e_total / n
-        t_kin = e_avr / K
+        T_kin = e_avr / K
 
         #  давление
-        left_pressure = sum(diff[0] for diff in self.impulse_diff) / (self.box.space_height() * DEPTH)
-        right_pressure = sum(diff[1] for diff in self.impulse_diff) / (self.box.space_height() * DEPTH)
-        top_pressure = sum(diff[2] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
-        bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / (self.box.space_width() * DEPTH)
+        left_pressure = sum(diff[0] for diff in self.impulse_diff) / \
+                        len(self.impulse_diff) / (self.box.space_height() * DEPTH)
+        right_pressure = sum(diff[1] for diff in self.impulse_diff) / \
+                         len(self.impulse_diff) / (self.box.space_height() * DEPTH)
+        top_pressure = sum(diff[2] for diff in self.impulse_diff) / \
+                       len(self.impulse_diff) / (self.box.space_width() * DEPTH)
+        bottom_pressure = sum(diff[3] for diff in self.impulse_diff) / \
+                          len(self.impulse_diff) / (self.box.space_width() * DEPTH)
         P_avr = (left_pressure + right_pressure + top_pressure + bottom_pressure) / 4
 
-        #  PV/T
-        pvt = P_avr * self.box.volume() / t_kin
+        #  PV/T = K * n
+        PV_T = P_avr * self.box.volume() / T_kin
+        Kn = K * n
 
         #  работа
+        s = self.box.space_height() * DEPTH     #  площадь поршня
         ds = self.box.borders[0].velocity.x * timestep  # пройденное расстояние (за шаг)
-        da = P_avr * ds
+        da = P_avr * s * ds
         self.a += da
+        e_factor = e_delta / self.a
 
-        # p v = nu r t = n K T
+        # p v = nu r T = n K T
         # T = P * V / (n * K)
-        t = (P_avr * self.box.volume()) / (NA * K * n)
-        e_termo = K * t  # "термическая" энергия молекул
-        p2 = (n * K * NA * t) / (self.box.volume())
+        T = (P_avr * self.box.volume()) / Kn
+        t_factor = T / T_kin
 
         # stat log
         self.time.append(self.cur_time)
         self.press.append(P_avr)
         self.volume.append(self.box.volume())
-        self.temperature.append(t)
+        self.temperature.append(T)
 
         return [
                 f"V (avr): {round(v_avr)}",
@@ -152,18 +158,20 @@ class App:
                 f"E (total delta): {e_delta:8e}",
                 f"A (piston work): {self.a:8e}",
                 f"E (avr): {e_avr:8e}",
-                f"T (kinetic): {t_kin:8f}",
+                f"T (kinetic): {round(T_kin)}",
+                f"T (K): {round(T)}",
+                "",
+                f"T / T_kin: {t_factor:8f}",
+                f"dE / A: {e_factor:8f}",
+                f"buff size: {len(self.impulse_diff)}",
+                "",
+                f"PV/T: {PV_T:8e}",
+                f"Kn: {Kn:8e}",
                 "",
                 f"P (avr): {P_avr:4e}",
-                f"P (nkt): {p2:4e}",
-                f"P (vert): {(top_pressure + bottom_pressure) / 2:2e}",
-                f"P (horz): {(right_pressure + left_pressure) / 2:2e}",
-                f"PV/T: {pvt:8e}",
-
-                f"E (=KT): {e_termo:8e}",
-                f"Temperature (K): {t:8e}",
-                f"Events_count: {cnt}",
-                f"Moves for step: {self.move_count:02}",
+                "",
+                f"-Events_count: {cnt}",
+                f"-Moves for step: {self.move_count:02}",
                 ]
 
     def calc_all_collisions(self):

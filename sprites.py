@@ -5,7 +5,7 @@ from box import Border
 from settings import *
 
 
-class Sprite(pygame.sprite.Sprite):
+class AtomSprite(pygame.sprite.Sprite):
     def __init__(self, a: Atom):
         pygame.sprite.Sprite.__init__(self)
         self.a = a
