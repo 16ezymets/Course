@@ -1,6 +1,6 @@
-FULL_ANIMATION: bool = True
+FULL_ANIMATION: bool = False
 ANIMATION: bool = True
-WRITE_DATA_TO_TEXTFILE: bool = False
+WRITE_DATA_TO_TEXTFILE: bool = True
 
 MIN_DRAW_RADIUS = 2
 STAT_WIDTH = 350
@@ -36,8 +36,8 @@ ATOM_COUNT = 1000
 ATOM_R = 16
 ATOM_COUNT = 30
 
-ATOM_R = 8
-ATOM_COUNT = 100
+ATOM_R = 2
+ATOM_COUNT = 500
 
 BOX_SPEED = 100  # скорость в м/c
 MAX_SPEED = H_SPEED  # скорость в м/c
