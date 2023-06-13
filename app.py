@@ -18,6 +18,7 @@ class App:
         self.press = []
         self.volume = []
         self.temperature = []
+        self.pvt = []
         self.data = [self.time, self.press, self.volume, self.temperature]
         self.e_initial = None
         self.a = 0
@@ -146,6 +147,7 @@ class App:
         self.press.append(P_avr)
         self.volume.append(self.box.volume())
         self.temperature.append(T)
+        self.pvt.append(PV_T)
 
         return [
                 f"V (avr): {round(v_avr)}",
