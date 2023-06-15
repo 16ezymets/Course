@@ -1,4 +1,4 @@
-FULL_ANIMATION: bool = False
+FULL_ANIMATION: bool = True
 ANIMATION: bool = True
 WRITE_DATA_TO_TEXTFILE: bool = False
 
@@ -36,8 +36,8 @@ ATOM_COUNT = 1000
 ATOM_R = 16
 ATOM_COUNT = 30
 
-ATOM_R = 2
-ATOM_COUNT = 500
+ATOM_R = 8
+ATOM_COUNT = 100
 
 BOX_SPEED = 100  # скорость в м/c
 MAX_SPEED = H_SPEED  # скорость в м/c
