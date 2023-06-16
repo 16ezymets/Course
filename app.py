@@ -146,7 +146,7 @@ class App:
         self.time.append(self.cur_time)
         self.press.append(P_avr)
         self.volume.append(self.box.volume())
-        self.temperature.append(T)
+        self.temperature.append(T_kin)
         self.pvt.append(PV_T)
 
         return [
