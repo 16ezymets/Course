@@ -172,8 +172,8 @@ class App:
                 "",
                 f"P (avr): {P_avr:4e}",
                 "",
-                f"-Events_count: {cnt}",
-                f"-Moves for step: {self.move_count:02}",
+                # f"-Events_count: {cnt}",
+                # "-Moves for step: {self.move_count:02}",
                 ]
 
     def calc_all_collisions(self):
