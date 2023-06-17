@@ -135,7 +135,7 @@ class App:
         ds = self.box.borders[0].velocity.x * timestep  # пройденное расстояние (за шаг)
         da = P_avr * s * ds
         self.a += da
-        e_factor = e_delta / self.a
+        e_factor = e_delta / self.a if self.a else 0
 
         # p v = nu r T = n K T
         # T = P * V / (n * K)

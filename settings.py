@@ -1,4 +1,4 @@
-FULL_ANIMATION: bool = False
+FULL_ANIMATION: bool = True
 ANIMATION: bool = True
 WRITE_DATA_TO_TEXTFILE: bool = False
 
@@ -27,11 +27,11 @@ TIME_SCALE = 5000   # замедление
 ATOM_M = 1.7 * 10**(-27)
 H_SPEED = 2000
 
-ATOM_R = 0.4
-ATOM_COUNT = 1000
+# ATOM_R = 0.4
+# ATOM_COUNT = 1000
 
-# ATOM_R = 5
-# ATOM_COUNT = 300
+ATOM_R = 6
+ATOM_COUNT = 200
 
 # ATOM_R = 16
 # ATOM_COUNT = 30
@@ -39,7 +39,7 @@ ATOM_COUNT = 1000
 # ATOM_R = 2
 # ATOM_COUNT = 600
 
-BOX_SPEED = 150  # скорость в м/c
+BOX_SPEED = 200  # скорость в м/c
 MAX_SPEED = H_SPEED  # скорость в м/c
 RED_PART = 20
 
